@@ -20,11 +20,11 @@
     </head>
     <body class="font-sans antialiased text-gray-800">
         <div class="container flex flex-col min-h-screen mx-auto">
-            @include('layouts.header')
+            @include('layouts.partials.header')
 
             <div class="flex justify-between flex-grow">
                 <aside class="w-1/4 mr-16">
-                    @include('layouts.sidebar')
+                    @include('layouts.partials.sidebar')
                 </aside>
 
                 <main class="w-3/4">
@@ -32,7 +32,7 @@
                 </main>
             </div>
 
-            @include('layouts.footer')
+            @include('layouts.partials.footer')
         </div>
     </body>
 </html>

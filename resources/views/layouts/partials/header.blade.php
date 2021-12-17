@@ -3,5 +3,5 @@
         <a href="{{ route('home') }}">{{ config('app.name') }}</a>
     </p>
 
-    @include('layouts.navigation')
+    @include('layouts.partials.navigation')
 </header>

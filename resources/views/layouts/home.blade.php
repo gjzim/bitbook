@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('sidebar-menu')
     <ul>
@@ -26,9 +26,9 @@
 @section('content')
     <h1 class="hidden" aria-hidden="true">Home</h1>
 
-    @include('post.publish')
+    @include('posts.partials.publish')
 
     @foreach ($posts as $post)
-        @include('post.single')
+        @include('posts.single')
     @endforeach
 @endsection
