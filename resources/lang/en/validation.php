@@ -140,6 +140,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'login' => [
+            'required' => 'The username / email field is required.',
+        ]
     ],
 
     /*

@@ -17,19 +17,17 @@
 
         <!-- Email Address -->
             <div>
-                <x-label for="email" :value="__('Email')"/>
+                <x-label for="login" :value="__('Username / Email')"/>
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                         autofocus/>
+                <x-input id="login" class="block mt-1 w-full" type="text" name="login"
+                         :value="old('login')" required autofocus/>
             </div>
 
             <!-- Password -->
             <div class="mt-4">
                 <x-label for="password" :value="__('Password')"/>
 
-                <x-input id="password" class="block mt-1 w-full"
-                         type="password"
-                         name="password"
+                <x-input id="password" class="block mt-1 w-full" type="password" name="password"
                          required autocomplete="current-password"/>
             </div>
 
