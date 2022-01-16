@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
@@ -14,10 +15,10 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.welcome');
-});
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home')->middleware('auth');
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])
+    ->name('users.edit')->middleware(['auth','can:update,user']);
 
 require __DIR__.'/auth.php';
