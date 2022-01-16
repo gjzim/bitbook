@@ -33,7 +33,7 @@
                         @csrf
 
                         <button type="submit" class="w-full px-5 py-1 text-left text-blue-500 hover:bg-gray-200">
-                            <i class="fa fa-sign-out mr-1" aria-hidden="true"></i>
+                            <i class="fa fa-sign-out-alt mr-1" aria-hidden="true"></i>
                             Sign out
                         </button>
                     </form>
