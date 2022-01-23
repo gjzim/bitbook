@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\CountriesListService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -26,7 +28,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit');
+        return view('users.edit', ['countries' => CountriesListService::getAll()]);
     }
 
     /**
@@ -34,11 +36,25 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user)],
+            'tagline' => ['nullable', 'string', 'max:255'],
+            'sex' => ['required', 'string', 'in:male,female,other'],
+            'birthdate' => ['nullable', 'date'],
+            'country' => ['nullable', 'string', 'max:2'],
+            'about' => ['nullable', 'string'],
+        ]);
+
+        $user->update($request->all());
+
+        return redirect()
+            ->route('users.edit', ['user' => $user])
+            ->with('message', 'Successfully saved changes.');
     }
 
     /**

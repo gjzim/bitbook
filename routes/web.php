@@ -21,4 +21,7 @@ Route::get('/', [HomeController::class, 'index'])
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])
     ->name('users.edit')->middleware(['auth','can:update,user']);
 
+Route::put('/users/{user}', [UserController::class, 'update'])
+    ->name('users.update')->middleware(['auth','can:update,user']);
+
 require __DIR__.'/auth.php';

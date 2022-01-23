@@ -1,167 +1,148 @@
-<div class="flex justify-between">
-    <div class="w-3/4 mr-10">
-        <h1 class="text-4xl font-bold text-gray-700">Edit Profile</h1>
+@extends('layouts.master')
 
-        <hr class="border-t border-gray-300 mt-3 mb-6">
+@section('sidebar-menu')
+    <x-sidebar-menu>
+        <x-sidebar-menu-item to="#" fa-class="fa-th-list" selected>News Feed</x-sidebar-menu-item>
+        <x-sidebar-menu-item to="#" fa-class="fa-user">View Profile</x-sidebar-menu-item>
+        <x-sidebar-menu-item to="#" fa-class="fa-users">Friends</x-sidebar-menu-item>
+    </x-sidebar-menu>
+@endsection
 
-        <form method="POST" action="#" class="mx-auto">
-            @csrf
+@section('content')
+    <div class="flex justify-between">
+        <div class="w-3/4 mr-10">
+            <h1 class="text-4xl font-bold text-gray-700">Edit Profile</h1>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="name" class="w-1/4 mr-5 text-right">Name:</label>
+            <hr class="border-t border-gray-300 mt-3 mb-6">
 
-                <div class="w-2/4">
-                    <input id="name" type="text" class="w-full border px-2 py-1 @error('name') is-invalid @enderror"
-                           name="name"
-                           value="{{ old('name') }}" placeholder="Full Name" required autocomplete="name">
+            <form method="POST" action="{{route('users.update', ['user' => auth()->user()])}}" class="mx-auto">
+                @method('PUT')
+                @csrf
 
-                    @error('name')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="name" :value="__('Name:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
+
+                    <div class="w-2/4">
+                        <x-input id="name" class="w-full border px-2 py-1"
+                                 type="text" name="name" :value="old('name') ?? auth()->user()->name" autofocus/>
+
+                        <x-form-error field="name"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="username" class="w-1/4 mr-5 text-right">Username:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="username" :value="__('Username:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
 
-                <div class="w-2/4">
-                    <input id="username" type="text"
-                           class="w-full border px-2 py-1 @error('username') is-invalid @enderror"
-                           name="username"
-                           value="{{ old('username') }}" placeholder="Username" required autocomplete="username">
+                    <div class="w-2/4">
+                        <x-input id="username" class="w-full border px-2 py-1"
+                                 type="text" name="username" :value="old('username') ?? auth()->user()->username"/>
 
-                    @error('username')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        <x-form-error field="username"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="email" class="w-1/4 mr-5 text-right">Email:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="email" :value="__('Email:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
 
-                <div class="w-2/4">
-                    <input id="email" type="email" class="w-full border px-2 py-1 @error('email') is-invalid @enderror"
-                           name="email"
-                           value="{{ old('email') }}" placeholder="Email Address" required autocomplete="email">
+                    <div class="w-2/4">
+                        <x-input id="email" class="w-full border px-2 py-1"
+                                 type="email" name="email" :value="old('email') ?? auth()->user()->email"/>
 
-                    @error('email')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        <x-form-error field="email"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="tag" class="w-1/4 mr-5 text-right">Tagline:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="tagline" :value="__('Tagline:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
 
-                <div class="w-2/4">
-                    <input id="tag" type="text" class="w-full border px-2 py-1 @error('tag') is-invalid @enderror"
-                           name="tag"
-                           value="{{ old('tag') }}" placeholder="Enter your tag line" required autocomplete="tag">
+                    <div class="w-2/4">
+                        <x-input id="tagline" class="w-full border px-2 py-1"
+                                 type="text" name="tagline" :value="old('tagline') ?? auth()->user()->tagline"/>
 
-                    @error('tag')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        <x-form-error field="tagline"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="sex" class="w-1/4 mr-5 text-right">Sex:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="sex" :value="__('Sex:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
 
-                <div class="w-2/4 flex items-center">
-                    <input id="sex" type="radio" name="sex" value="male"
-                           class="mr-1" {{ old('sex')=='male' ? 'checked' : '' }}> Male
-                    <input id="sex" type="radio" name="sex" value="female"
-                           class="ml-3 mr-1" {{ old('sex')=='female' ? 'checked' : '' }}> Female
+                    <div class="w-2/4 flex items-center">
+                        <x-radio name="sex" value="male"
+                                 :checked="old('sex') == 'male' || auth()->user()->sex == 'male'">Male
+                        </x-radio>
+                        <x-radio name="sex" value="female"
+                                 :checked="old('sex') == 'female' || auth()->user()->sex == 'female'">Female
+                        </x-radio>
+                        <x-radio name="sex" value="other"
+                                 :checked="old('sex') == 'other' || auth()->user()->sex == 'other'">Other
+                        </x-radio>
 
-                    @error('sex')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        <x-form-error field="sex"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="birthday" class="w-1/4 mr-5 text-right">Birthday:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="birthdate" :value="__('Birthdate:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
+                    <div class="w-2/4">
+                        <x-input id="birthdate" class="w-full border px-2 py-1"
+                                 type="date" name="birthdate" :value="old('birthdate') ?? auth()->user()->birthdate"/>
 
-                <div class="w-2/4">
-                    <input id="birthday" type="text"
-                           class="w-full border px-2 py-1 @error('birthday') is-invalid @enderror"
-                           name="birthday"
-                           value="{{ old('birthday') }}" placeholder="Select your birthday" required
-                           autocomplete="birthday">
-
-                    @error('birthday')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        <x-form-error field="birthdate"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex items-center">
-                <label for="country" class="w-1/4 mr-5 text-right">Country:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="country" :value="__('Country:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
 
-                <div class="w-2/4">
-                    <select name="country" id="country" class="w-full border px-2 py-1">
-                        @for($i=0;$i<5;$i++)
-                            <option value="{{$i}}">{{$i}}</option>
-                        @endfor
-                    </select>
+                    <div class="w-2/4">
+                        <x-select id="country" name="country" :options="$countries"
+                                  :selected="old('country') ?? auth()->user()->country"/>
 
-                    @error('country')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        @error('country')
+                        <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex">
-                <label for="address" class="w-1/4 mr-5 text-right">Address:</label>
+                <div class="mt-2 mb-4 flex">
+                    <x-label for="about" :value="__('About Me:')" class="w-1/4 relative pt-1 mr-5 text-base text-right"/>
 
-                <div class="w-2/4">
-                    <textarea name="address" id="address" cols="30" rows="3"
-                              class="w-full border px-2 py-1 @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
+                    <div class="w-2/4">
+                        <x-textarea name="about" id="about" class="w-full" rows="5">
+                            {{old('about') ?? auth()->user()->about}}
+                        </x-textarea>
 
-                    @error('address')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                        @error('about')
+                        <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2 mb-4 flex">
-                <label for="about" class="w-1/4 mr-5 text-right">About Me:</label>
+                <hr class="border-t border-gray-300 mt-8 my-5">
 
-                <div class="w-2/4">
-                    <textarea name="about" id="about" cols="30" rows="5"
-                              class="w-full border px-2 py-1 @error('about') is-invalid @enderror">{{ old('about') }}</textarea>
+                <div class="flex justify-between">
+                    @if (session('message'))
+                        <x-form-message />
+                    @endif
 
-                    @error('about')
-                    <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                    <x-button class="ml-auto">{{ __('Save Changes') }}</x-button>
                 </div>
+            </form>
+        </div>
+
+
+
+        <div class="w-1/4">
+            <div class="mt-5 p-1 border border-gray-300">
+                <img src="/img/user.jpg" alt="" class="mx-auto w-full">
             </div>
-
-
-            <hr class="border-t border-gray-300 mt-8 my-5">
-
-            <div class="float-right mt-2">
-                <button type="submit" class="bg-blue-600 text-center text-white px-3 py-1 mr-2 hover:bg-blue-500">
-                    Save
+            <div>
+                <button
+                    class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
+                    <i class="fa fa-camera mr-1" aria-hidden="true"></i>
+                    Upload Photo
                 </button>
-
-                <a class="text-gray-600 hover:underline" href="#" id="cancel-post">
-                    Cancel
-                </a>
             </div>
-        </form>
-    </div>
-
-    <div class="w-1/4">
-        <div class="mt-5 p-1 border border-gray-300">
-            <img src="/img/user.jpg" alt="" class="mx-auto w-full">
-        </div>
-        <div>
-            <button
-                class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
-                <i class="fa fa-camera mr-1" aria-hidden="true"></i>
-                Upload Photo
-            </button>
         </div>
     </div>
-</div>
+@endsection
