@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Services\CountriesListService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,9 +47,31 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birthdate' => 'datetime',
     ];
 
-    public function getRouteKeyName() {
+    public function getUsernamePrefixedAttribute($value)
+    {
+        return "@{$this->username}";
+    }
+
+    public function getSexAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    public function getCountryAttribute($value)
+    {
+        return CountriesListService::getCountryName($value);
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('users.show', ['user' => $this]);
+    }
+
+    public function getRouteKeyName()
+    {
         return 'username';
     }
 }
