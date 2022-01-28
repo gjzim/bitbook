@@ -272,7 +272,7 @@ class CountriesListService
      * @param  string  $code
      * @return string
      */
-    public static function getCountryName(string $code)
+    public static function getCountryName(?string $code = "")
     {
         return self::$countries[$code] ?? "";
     }
