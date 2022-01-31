@@ -18,6 +18,9 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home')->middleware('auth');
 
+Route::get('/users/{user}', [UserController::class, 'show'])
+    ->name('users.show')->middleware(['auth']);
+
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])
     ->name('users.edit')->middleware(['auth','can:update,user']);
 
