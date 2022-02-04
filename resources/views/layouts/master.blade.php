@@ -14,9 +14,6 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased text-gray-800">
         <div class="container flex flex-col min-h-screen mx-auto">
@@ -34,5 +31,10 @@
 
             @include('layouts.partials.footer')
         </div>
+
+        @yield('overlays')
+
+        <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}" defer></script>
     </body>
 </html>
