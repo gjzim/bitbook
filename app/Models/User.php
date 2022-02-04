@@ -53,6 +53,21 @@ class User extends Authenticatable implements HasMedia
         'birthdate' => 'datetime',
     ];
 
+    public function getUsernamePrefixedAttribute()
+    {
+        return "@{$this->username}";
+    }
+
+    public function getCountryNameAttribute()
+    {
+        return CountriesListService::getCountryName($this->attributes['country']);
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('users.show', ['user' => $this]);
+    }
+
     public function getAvatarUrl($size = '')
     {
         return $this->getMedia('avatar')->isNotEmpty()
