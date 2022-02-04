@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -50,24 +53,35 @@ class User extends Authenticatable
         'birthdate' => 'datetime',
     ];
 
-    public function getUsernamePrefixedAttribute($value)
+    public function getAvatarUrl($size = '')
     {
-        return "@{$this->username}";
+        return $this->getMedia('avatar')->isNotEmpty()
+        ? $this->getMedia('avatar')->last()->getUrl($size)
+        : $this->getFallbackAvatarUrl($size);
     }
 
-    public function getSexAttribute($value)
+    public function getFallbackAvatarUrl(string $size = '')
     {
-        return ucfirst($value);
+        $avatarConversions = ['thumb', 'small'];
+
+        return asset("images/anonymous.jpg");
+
+        return in_array($size, $avatarConversions)
+        ? asset("images/anonymous-{$size}.jpg")
+        : asset("images/anonymous.jpg");
     }
 
-    public function getCountryAttribute($value)
+    public function registerMediaConversions(Media $media = null): void
     {
-        return CountriesListService::getCountryName($value);
-    }
+        $this->addMediaConversion('thumb')
+            ->width(255)
+            ->height(255)
+            ->performOnCollections('avatar');
 
-    public function getUrlAttribute()
-    {
-        return route('users.show', ['user' => $this]);
+        $this->addMediaConversion('small')
+            ->width(50)
+            ->height(50)
+            ->performOnCollections('avatar');
     }
 
     public function getRouteKeyName()
