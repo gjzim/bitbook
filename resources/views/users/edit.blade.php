@@ -137,7 +137,7 @@
                 <img src="{{auth()->user()->getAvatarUrl('thumb')}}" alt="" class="mx-auto w-full">
             </div>
             <div>
-                <button
+                <button x-data @click="$dispatch('open-avatar-modal')"
                     class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
                     <i class="fa fa-camera mr-1" aria-hidden="true"></i>
                     Change Photo
@@ -145,4 +145,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('overlays')
+    @include('overlays.upload-avatar')
 @endsection

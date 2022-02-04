@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserAvatarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +27,8 @@ Route::get('/users/{user}/edit', [UserController::class, 'edit'])
 
 Route::put('/users/{user}', [UserController::class, 'update'])
     ->name('users.update')->middleware(['auth','can:update,user']);
+
+Route::post('/users/{user}/avatar/update', [UserAvatarController::class, 'update'])
+    ->name('users.avatar.update')->middleware(['auth','can:update,user']);
 
 require __DIR__.'/auth.php';
