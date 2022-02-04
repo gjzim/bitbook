@@ -34,10 +34,10 @@
                 <span>
                     @php
                         switch ($user->sex) {
-                            case 'Male':
+                            case 'male':
                                 $faSexIcon = 'fa-male';
                                 break;
-                            case 'Female':
+                            case 'female':
                                 $faSexIcon = 'fa-female';
                                 break;
                             default:
@@ -46,15 +46,15 @@
                         }
                     @endphp
                     <i class="fas {{ $faSexIcon }} mr-1"></i>
-                    {{ $user->sex }}
+                    {{ ucfirst($user->sex) }}
                 </span>
 
                 @if ($user->birthdate)
-                    <span> | <i class="fas fa-birthday-cake mr-1"></i> {{ $user->birthdate->format('d/m/Y') }}</span>
+                    <span> | <i class="fas fa-birthday-cake mr-1"></i> {{ $user->birthdate->format('m/d/Y') }}</span>
                 @endif
 
                 @if ($user->country)
-                    <span> | <i class="fas fa-flag mr-1"></i> {{ $user->country }}</span>
+                    <span> | <i class="fas fa-flag mr-1"></i> {{ $user->countryName }}</span>
                 @endif
             </div>
 
