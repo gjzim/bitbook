@@ -1,16 +1,17 @@
 <div class="bg-gray-100 border border-gray-200">
     <header class="flex items-center m-5">
         <div class="bg-white border border-gray-400 p-xs mr-3">
-            <a href="{{auth()->user()->url}}">
-                <img src="#" alt="#" width="50">
+            <a href="{{ auth()->user()->url }}">
+                <img src="{{ auth()->user()->getAvatarUrl('small') }}" alt="Avatar image of {{ auth()->user()->name }}"
+                    width="50">
             </a>
         </div>
         <div class="text-base">
             <p class="text-blue-500 leading-4 font-bold">
-                <a href="{{auth()->user()->url}}">{{auth()->user()->name}}</a>
+                <a href="{{ auth()->user()->url }}">{{ auth()->user()->name }}</a>
             </p>
             <p class="font-bold text-gray-500">
-                <a href="{{auth()->user()->url}}">{{auth()->user()->username}}</a>
+                <a href="{{ auth()->user()->url }}">{{ auth()->user()->username }}</a>
             </p>
         </div>
     </header>
@@ -35,9 +36,9 @@
                     </form>
                 </li>
 
-                @if( Route::current()->getName() !== 'home' )
+                @if (Route::current()->getName() !== 'home')
                     <li>
-                        <a href="{{route('home')}}" class="block px-5 py-1 text-blue-500 hover:bg-gray-200">
+                        <a href="{{ route('home') }}" class="block px-5 py-1 text-blue-500 hover:bg-gray-200">
                             <i class="fa fa-home mr-1" aria-hidden="true"></i>
                             Back to Home
                         </a>
