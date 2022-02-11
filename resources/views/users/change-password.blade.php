@@ -1,65 +1,60 @@
-<div class="">
-    <h1 class="text-4xl font-bold text-gray-700">Change Password </h1>
+@extends('layouts.users')
 
-    <hr class="border-t border-gray-300 mt-3 mb-6">
+@section('content')
+    <div>
+        <h1 class="text-4xl font-bold text-gray-700">Change Password </h1>
 
-    <form method="POST" action="#" class="mt-5">
-        @csrf
+        <hr class="border-t border-gray-300 mt-3 mb-6">
 
-        <div class="mt-2 mb-4 flex items-center">
-            <label for="password" class="w-1/4 mr-5 text-right">Current Password:</label>
+        <form method="POST" action="{{ route('users.update.password', ['user' => $user]) }}" class="mt-5">
+            @csrf
 
-            <div class="w-2/4">
-                <input id="password" type="password"
-                       class="w-full border px-2 py-1 @error('password') is-invalid @enderror"
-                       name="password"
-                       placeholder="Current Password" required autocomplete="password">
+            <div class="mt-2 mb-4 flex">
+                <x-label for="password" :value="__('Current Password:')"
+                    class="w-1/4 relative pt-1 mr-5 text-base text-right" />
 
-                @error('password')
-                <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
+                <div class="w-2/4">
+                    <x-input id="password" class="w-full border px-2 py-1" type="password" name="password" required
+                        autofocus />
+
+                    <x-form-error field="password" />
+                </div>
             </div>
-        </div>
 
-        <div class="mt-2 mb-4 flex items-center">
-            <label for="new-password" class="w-1/4 mr-5 text-right">New Password:</label>
+            <div class="mt-2 mb-4 flex">
+                <x-label for="new_password" :value="__('New Password:')"
+                    class="w-1/4 relative pt-1 mr-5 text-base text-right" />
 
-            <div class="w-2/4">
-                <input id="new-password" type="password"
-                       class="w-full border px-2 py-1 @error('new-password') is-invalid @enderror"
-                       name="new-password"
-                       placeholder="Current Password" required autocomplete="new-password">
+                <div class="w-2/4">
+                    <x-input id="new_password" class="w-full border px-2 py-1" type="password" name="new_password"
+                        required />
 
-                @error('new-password')
-                <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
+                    <x-form-error field="new_password" />
+                </div>
             </div>
-        </div>
 
-        <div class="mt-2 mb-4 flex items-center">
-            <label for="new-password" class="w-1/4 mr-5 text-right">Confirm Password:</label>
 
-            <div class="w-2/4">
-                <input id="confirm-password" type="password"
-                       class="w-full border px-2 py-1 @error('confirm-password') is-invalid @enderror"
-                       name="confirm-password"
-                       placeholder="Current Password" required autocomplete="confirm-password">
+            <div class="mt-2 mb-4 flex">
+                <x-label for="new_password_confirmation" :value="__('Confirm New Password:')"
+                    class="w-1/4 relative pt-1 mr-5 text-base text-right" />
 
-                @error('confirm-password')
-                <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                @enderror
+                <div class="w-2/4">
+                    <x-input id="new_password_confirmation" class="w-full border px-2 py-1" type="password"
+                        name="new_password_confirmation" required />
+
+                    <x-form-error field="new_password_confirmation" />
+                </div>
             </div>
-        </div>
-        <hr class="border-t border-gray-300 mt-8 my-5">
 
-        <div class="float-right mt-2">
-            <button type="submit" class="bg-blue-600 text-center text-white px-3 py-1 mr-2 hover:bg-blue-500">
-                Continue
-            </button>
+            <hr class="border-t border-gray-300 mt-8 my-5">
 
-            <a class="text-gray-600 hover:underline" href="#" id="cancel-post">
-                Cancel
-            </a>
-        </div>
-    </form>
-</div>
+            <div class="flex justify-between">
+                @if (session('message'))
+                    <x-form-message />
+                @endif
+
+                <x-button class="ml-auto">{{ __('Update') }}</x-button>
+            </div>
+        </form>
+    </div>
+@endsection
