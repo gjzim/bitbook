@@ -1,16 +1,4 @@
-@extends('layouts.master')
-
-@section('sidebar-menu')
-    <x-sidebar-menu>
-        <x-sidebar-menu-item to="#" fa-class="fa-user" selected>About</x-sidebar-menu-item>
-        <x-sidebar-menu-item to="#" fa-class="fa-th-list">Posts</x-sidebar-menu-item>
-        @if (auth()->user()->can('update', $user))
-            <x-sidebar-menu-item to="#" fa-class="fa-edit">Edit Profile</x-sidebar-menu-item>
-            <x-sidebar-menu-item to="#" fa-class="fa-wrench">Change Password</x-sidebar-menu-item>
-            <x-sidebar-menu-item to="#" fa-class="fa-trash">Delete Profile</x-sidebar-menu-item>
-        @endif
-    </x-sidebar-menu>
-@endsection
+@extends('layouts.users')
 
 @section('content')
     <div class="flex justify-between">
@@ -80,7 +68,8 @@
 
         <div class="w-1/4">
             <div class="mt-5 p-1 border border-gray-300">
-                <img src="/img/user.jpg" alt="" class="mx-auto w-full">
+                <img src="{{ $user->getAvatarUrl('thumb') }}" alt="Avatar image of {{ $user->name }}"
+                    width="255px">
             </div>
             <div>
                 @if (auth()->user()->can('update', $user))

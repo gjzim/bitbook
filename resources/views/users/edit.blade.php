@@ -1,12 +1,4 @@
-@extends('layouts.master')
-
-@section('sidebar-menu')
-    <x-sidebar-menu>
-        <x-sidebar-menu-item to="#" fa-class="fa-th-list" selected>News Feed</x-sidebar-menu-item>
-        <x-sidebar-menu-item to="#" fa-class="fa-user">View Profile</x-sidebar-menu-item>
-        <x-sidebar-menu-item to="#" fa-class="fa-users">Friends</x-sidebar-menu-item>
-    </x-sidebar-menu>
-@endsection
+@extends('layouts.users')
 
 @section('content')
     <div class="flex justify-between">
@@ -87,7 +79,7 @@
                         class="w-1/4 relative pt-1 mr-5 text-base text-right" />
                     <div class="w-2/4">
                         <x-input id="birthdate" class="w-full border px-2 py-1" type="date" name="birthdate"
-                            :value="old('birthdate') ?? auth()->user()->birthdate->format('Y-m-d')" />
+                            :value="old('birthdate') ?? auth()->user()->birthdate?->format('Y-m-d')" />
 
                         <x-form-error field="birthdate" />
                     </div>
@@ -134,7 +126,7 @@
 
         <div class="w-1/4">
             <div class="mt-5 p-1 border border-gray-300">
-                <img src="{{auth()->user()->getAvatarUrl('thumb')}}" alt="" class="mx-auto w-full">
+                <img src="{{ auth()->user()->getAvatarUrl('thumb') }}" alt="" class="mx-auto w-full">
             </div>
             <div>
                 <button x-data @click="$dispatch('open-avatar-modal')"
