@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -47,6 +48,19 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+
+        $this->addCustomRouteModelBindings();
+    }
+
+    /**
+     * Add custom route model bindings.
+     *
+     * @return void
+     */
+    private function addCustomRouteModelBindings()
+    {
+        Route::model('sender', User::class);
+        Route::model('receiver', User::class);
     }
 
     /**
