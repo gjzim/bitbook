@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,7 +46,19 @@ Route::post('/users/{user}/change-password', [ChangePasswordController::class, '
 Route::get('/users/{user}/delete', [UserController::class, 'confirmDelete'])
     ->name('users.delete.confirm')->middleware(['auth', 'can:update,user', 'password.confirm']);
 
-Route::delete('/users/{user}/destroy', [UserController::class, 'destroy'])
+Route::delete('/users/{user}', [UserController::class, 'destroy'])
     ->name('users.destroy')->middleware(['auth', 'can:update,user']);
+
+Route::post('users/{receiver}/friendships', [FriendshipController::class, 'create'])
+    ->name('users.friendships.create')
+    ->middleware(['auth', 'can:add-as-friend,receiver']);
+
+Route::put('users/{sender}/friendships/{receiver}', [FriendshipController::class, 'update'])
+    ->name('users.friendships.update')
+    ->middleware(['auth']);
+
+Route::delete('users/{sender}/friendships/{receiver}', [FriendshipController::class, 'destroy'])
+    ->name('users.friendships.destroy')
+    ->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
