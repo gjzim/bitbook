@@ -78,6 +78,10 @@
                         Upload Photo
                     </button>
                 @endcan
+
+                @can('add-as-friend', $user)
+                    @include('users.partials.friend-request-btn')
+                @endcan
             </div>
         </div>
     </div>
