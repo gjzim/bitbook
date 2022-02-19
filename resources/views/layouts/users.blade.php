@@ -4,7 +4,7 @@
     <x-sidebar-menu>
         <x-sidebar-menu-item to="{{ route('users.show', ['user' => $user]) }}" fa-class="fa-user">About
         </x-sidebar-menu-item>
-        <x-sidebar-menu-item to="{{ route('users.show.posts', ['user' => $user]) }}" fa-class="fa-th-list">Posts
+        <x-sidebar-menu-item to="{{ route('users.posts.show', ['user' => $user]) }}" fa-class="fa-th-list">Posts
         </x-sidebar-menu-item>
         @can('update', $user)
             <x-sidebar-menu-item to="{{ route('users.edit', ['user' => $user]) }}" fa-class="fa-edit">Edit Profile

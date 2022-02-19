@@ -26,7 +26,7 @@ Route::get('/users/{user}', [UserController::class, 'show'])
     ->name('users.show')->middleware(['auth']);
 
 Route::get('/users/{user}/posts', [UserController::class, 'posts'])
-    ->name('users.show.posts')->middleware(['auth']);
+    ->name('users.posts.show')->middleware(['auth']);
 
 Route::get('/users/{user}/edit', [UserController::class, 'edit'])
     ->name('users.edit')->middleware(['auth', 'can:update,user']);
