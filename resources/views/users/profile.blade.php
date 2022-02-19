@@ -55,7 +55,7 @@
             @endif
 
 
-            @if (auth()->user()->can('update', $user))
+            @can('update', $user)
                 <hr class="border-t border-gray-300 mt-5 mb-3">
 
                 <a href="{{ route('users.edit', ['user' => $user]) }}"
@@ -63,27 +63,21 @@
                     <i class="fa fa-edit mr-1" aria-hidden="true"></i>
                     Edit profile
                 </a>
-            @endif
+            @endcan
         </div>
 
         <div class="w-1/4">
             <div class="mt-5 p-1 border border-gray-300">
-                <img src="{{ $user->getAvatarUrl('thumb') }}" alt="Avatar image of {{ $user->name }}"
-                    width="255px">
+                <img src="{{ $user->getAvatarUrl('thumb') }}" alt="Avatar image of {{ $user->name }}" width="255px">
             </div>
             <div>
-                @if (auth()->user()->can('update', $user))
+                @can('update', $user)
                     <button
                         class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
                         <i class="fa fa-camera mr-1" aria-hidden="true"></i>
                         Upload Photo
                     </button>
-                @endif
-                <button
-                    class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
-                    <i class="fa fa-user mr-1" aria-hidden="true"></i>
-                    Add as Friend
-                </button>
+                @endcan
             </div>
         </div>
     </div>

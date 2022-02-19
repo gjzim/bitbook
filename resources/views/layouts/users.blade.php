@@ -6,7 +6,7 @@
         </x-sidebar-menu-item>
         <x-sidebar-menu-item to="{{ route('users.show.posts', ['user' => $user]) }}" fa-class="fa-th-list">Posts
         </x-sidebar-menu-item>
-        @if (auth()->user()->can('update', $user))
+        @can('update', $user)
             <x-sidebar-menu-item to="{{ route('users.edit', ['user' => $user]) }}" fa-class="fa-edit">Edit Profile
             </x-sidebar-menu-item>
             <x-sidebar-menu-item to="{{ route('users.change.password', ['user' => $user]) }}" fa-class="fa-wrench">
@@ -15,7 +15,7 @@
             <x-sidebar-menu-item to="{{ route('users.delete.confirm', ['user' => $user]) }}" fa-class="fa-trash">
                 Delete Profile
             </x-sidebar-menu-item>
-        @endif
+        @endcan
     </x-sidebar-menu>
 @endsection
 
