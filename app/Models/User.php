@@ -71,8 +71,8 @@ class User extends Authenticatable implements HasMedia
     public function getAvatarUrl($size = '')
     {
         return $this->getMedia('avatar')->isNotEmpty()
-        ? $this->getMedia('avatar')->last()->getUrl($size)
-        : $this->getFallbackAvatarUrl($size);
+            ? $this->getMedia('avatar')->last()->getUrl($size)
+            : $this->getFallbackAvatarUrl($size);
     }
 
     public function getFallbackAvatarUrl(string $size = '')
@@ -82,8 +82,107 @@ class User extends Authenticatable implements HasMedia
         return asset("images/anonymous.jpg");
 
         return in_array($size, $avatarConversions)
-        ? asset("images/anonymous-{$size}.jpg")
-        : asset("images/anonymous.jpg");
+            ? asset("images/anonymous-{$size}.jpg")
+            : asset("images/anonymous.jpg");
+    }
+
+    /**
+     * Get a query builder instace to find the friendship model between
+     * this user and another user.
+     *
+     * @param User $user
+     * @return Illuminate\Database\Query\Builder
+     */
+    public function friendshipWith(User $user)
+    {
+        return Friendship::where([
+            ['sender_id', $this->id],
+            ['receiver_id', $user->id],
+        ])->orWhere([
+            ['sender_id', $user->id],
+            ['receiver_id', $this->id],
+        ]);
+    }
+
+    /**
+     * Get the friendship status of this user and another user.
+     *
+     * @param User $user
+     * @return string
+     */
+    public function getFriendshipStatusWith(User $user)
+    {
+        $friendship = $this->friendshipWith($user)->first();
+
+        return $friendship ? $friendship->statusOf($this) : 'none';
+    }
+
+    /**
+     * Relationship between this user and the ones it sent friend requests to.
+     */
+    public function sentFriendRequestsTo()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'sender_id', 'receiver_id')
+            ->as('friendship')
+            ->withTimestamps()
+            ->withPivot(['status', 'accepted_at'])
+            ->using(Friendship::class);
+    }
+
+    /**
+     * Relationship between this user and the ones it received friend requests from.
+     */
+    public function receivedFriendRequestsFrom()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'receiver_id', 'sender_id')
+            ->as('friendship')
+            ->withTimestamps()
+            ->withPivot(['status', 'accepted_at'])
+            ->using(Friendship::class);
+    }
+
+    public function getFriendsAttribute()
+    {
+        if (!$this->relationLoaded('friends')) {
+            $this->setRelation('friends', $this->getAllFriends());
+        }
+
+        return $this->getRelation('friends');
+    }
+
+    private function getAllFriends()
+    {
+        if ($friendsOfThisUser = $this->friendsOfThisUser) {
+            return $friendsOfThisUser->merge($this->thisUserFriendOf);
+        }
+
+        return $this->thisUserFriendOf;
+    }
+
+    /**
+     * Friendships that this user started
+     */
+    protected function friendsOfThisUser()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'sender_id', 'receiver_id')
+            ->as('friendship')
+            ->wherePivot('status', 'accepted')
+            ->withTimestamps()
+            ->withPivot(['status', 'accepted_at'])
+            ->using(Friendship::class);
+    }
+
+    /**
+     * Friendships that this user was asked for
+     */
+    protected function thisUserFriendOf()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'receiver_id', 'sender_id')
+            ->as('friendship')
+            ->wherePivot('status', 'accepted')
+            ->withTimestamps()
+            ->withPivot(['status', 'accepted_at'])
+            ->using(Friendship::class);
     }
 
     public function registerMediaConversions(Media $media = null): void

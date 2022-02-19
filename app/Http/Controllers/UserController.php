@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Friendship;
 use App\Models\User;
 use App\Services\CountriesListService;
 use Illuminate\Http\Request;
@@ -18,7 +19,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.profile', ['user' => $user]);
+        return view('users.profile', [
+            'user' => $user,
+            'friendship' => auth()->user()->friendshipWith($user)->first(),
+            'friendshipStatus' => auth()->user()->getFriendshipStatusWith($user),
+        ]);
     }
 
     /**
