@@ -16,6 +16,7 @@ class Friendship extends Pivot
     protected $fillable = [
         'sender_id',
         'receiver_id',
+        'accepted_at',
         'status',
     ];
 

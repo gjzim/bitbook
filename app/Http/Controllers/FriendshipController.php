@@ -44,6 +44,7 @@ class FriendshipController extends Controller
         if ($action == 'accept-friendship') {
             $sender->sentFriendRequestsTo()->updateExistingPivot($receiver->id, [
                 'status' => 'accepted',
+                'accepted_at' => now()->toDateTimeString(),
             ]);
 
             $message = 'Successfully accepted the friendship request.';
