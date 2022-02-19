@@ -33,6 +33,18 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user add the model as friend.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function addAsFriend(User $user, User $model)
+    {
+        return $user->id !== $model->id;
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
