@@ -33,6 +33,30 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can view friends of the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function viewFriends(User $user, User $model)
+    {
+        return $user->id === $model->id;
+    }
+
+    /**
+     * Determine whether the user can edit the friend list of the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function updateFriends(User $user, User $model)
+    {
+        return $user->id === $model->id;
+    }
+
+    /**
      * Determine whether the user add the model as friend.
      *
      * @param  \App\Models\User  $user
