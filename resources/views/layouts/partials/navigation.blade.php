@@ -1,13 +1,13 @@
 <nav>
     <ul class="flex items-center text-blue-500">
         <li class="ml-2">
-            <a href="#" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
+            <a href="{{ route('home') }}" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
                 Home
             </a>
         </li>
 
         <li class="ml-2">
-            <a href="#" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
+            <a href="{{ auth()->user()->url }}" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
                 Profile
             </a>
         </li>
@@ -19,8 +19,12 @@
         </li>
 
         <li class="ml-2">
-            <a href="#" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
+            <a href="{{ route('users.friends', ['user' => auth()->user()]) }}"
+                class="px-3 py-2 hover:bg-blue-500 hover:text-white">
                 Friends
+                @if (auth()->user()->pendingFriendRequestsCount() > 0)
+                    <x-notification-count-bubble :count="auth()->user()->pendingFriendRequestsCount()" />
+                @endif
             </a>
         </li>
 
