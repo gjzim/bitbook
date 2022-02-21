@@ -8,6 +8,39 @@ use Illuminate\Http\Request;
 class FriendshipController extends Controller
 {
     /**
+     * Display the friends of a user.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function index(User $user)
+    {
+        return view('users.friends.index', ['user' => $user]);
+    }
+
+    /**
+     * Display the pending friends of a user.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function pendingIndex(User $user)
+    {
+        return view('users.friends.pending', ['user' => $user]);
+    }
+
+    /**
+     * Display the suggested friends of a user.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function suggestionsIndex(User $user)
+    {
+        return view('users.friends.suggestions', ['user' => $user]);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $receiver

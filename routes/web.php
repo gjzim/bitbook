@@ -61,4 +61,13 @@ Route::delete('users/{sender}/friendships/{receiver}', [FriendshipController::cl
     ->name('users.friendships.destroy')
     ->middleware(['auth']);
 
+Route::get('/users/{user}/friends', [FriendshipController::class, 'index'])
+    ->name('users.friends')->middleware(['auth', 'can:view-friends,user']);
+
+Route::get('/users/{user}/friends/pending', [FriendshipController::class, 'pendingIndex'])
+    ->name('users.friends.pending')->middleware(['auth', 'can:update-friends,user']);
+
+Route::get('/users/{user}/friends/suggestions', [FriendshipController::class, 'suggestionsIndex'])
+    ->name('users.friends.suggestions')->middleware(['auth', 'can:update-friends,user']);
+
 require __DIR__ . '/auth.php';
