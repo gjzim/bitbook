@@ -20,7 +20,7 @@
 
         <li class="ml-2">
             <a href="{{ route('users.friends', ['user' => auth()->user()]) }}"
-                class="px-3 py-2 hover:bg-blue-500 hover:text-white">
+                class="flex items-center px-3 py-2 hover:bg-blue-500 hover:text-white">
                 Friends
                 @if (auth()->user()->pendingFriendRequestsCount() > 0)
                     <x-notification-count-bubble :count="auth()->user()->pendingFriendRequestsCount()" />
