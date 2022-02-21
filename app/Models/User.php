@@ -141,6 +141,79 @@ class User extends Authenticatable implements HasMedia
             ->using(Friendship::class);
     }
 
+    /**
+     * Pending relationships between this user and the ones it received friend requests from.
+     */
+    public function pendingFriendRequestsFrom()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'receiver_id', 'sender_id')
+            ->as('friendship')
+            ->wherePivot('status', 'pending')
+            ->withTimestamps()
+            ->withPivot(['status', 'accepted_at'])
+            ->using(Friendship::class);
+    }
+
+    public function pendingFriendRequestsCount()
+    {
+        return $this->pendingFriendRequestsFrom->count();
+    }
+
+    /**
+     * Get a collection of the ids of the users that have
+     * friendships(accepted, pending) with this user.
+     *
+     * @return Illuminate\Support\Collection
+     */
+    protected function getRelatedUsersIds()
+    {
+        return Friendship::select('sender_id', 'receiver_id')
+            ->where(function ($query) {
+                $query->where('sender_id', $this->id)
+                    ->orWhere('receiver_id', $this->id);
+            })
+            ->get()
+            ->map(function ($friendship) {
+                return $friendship->sender_id !== $this->id
+                    ? $friendship->sender_id
+                    : $friendship->receiver_id;
+            });
+    }
+
+    /**
+     * Get a collection of suggested friends for this user.
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getSuggestedFriends()
+    {
+        $count = 20;
+        $releatedUsersIds = $this->getRelatedUsersIds();
+
+        if ($releatedUsersIds->isEmpty()) {
+            return User::inRandomOrder()
+                ->where('id', '!=', $this->id)
+                ->take($count)
+                ->get();
+        }
+
+        $suggestedFriendsIds = Friendship::select('sender_id', 'receiver_id')
+            ->where('status', 'accepted')
+            ->where(function ($query) use ($releatedUsersIds) {
+                $query->whereIn('sender_id', $releatedUsersIds)
+                    ->orWhereIn('receiver_id', $releatedUsersIds);
+            })
+            ->get()
+            ->map(fn ($row) => [$row->sender_id, $row->receiver_id])
+            ->flatten()
+            ->reject(fn ($id) => $id === $this->id || $releatedUsersIds->contains($id))
+            ->unique();
+
+        return User::whereIn('id', $suggestedFriendsIds)
+            ->take($count)
+            ->get();
+    }
+
     public function getFriendsAttribute()
     {
         if (!$this->relationLoaded('friends')) {
