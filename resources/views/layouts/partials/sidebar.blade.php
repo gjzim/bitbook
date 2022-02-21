@@ -1,17 +1,17 @@
 <div class="bg-gray-100 border border-gray-200">
     <header class="flex items-center m-5">
         <div class="bg-white border border-gray-400 p-xs mr-3">
-            <a href="{{ auth()->user()->url }}">
-                <img src="{{ auth()->user()->getAvatarUrl('small') }}" alt="Avatar image of {{ auth()->user()->name }}"
-                    width="50">
+            <a href="{{ route('users.show', ['user' => auth()->user()]) }}">
+                <img src="{{ auth()->user()->getAvatarUrl('small') }}"
+                    alt="Avatar image of {{ auth()->user()->name }}" width="50">
             </a>
         </div>
         <div class="text-base">
             <p class="text-blue-500 leading-4 font-bold">
-                <a href="{{ auth()->user()->url }}">{{ auth()->user()->name }}</a>
+                <a href="{{ route('users.show', ['user' => auth()->user()]) }}">{{ auth()->user()->name }}</a>
             </p>
             <p class="font-bold text-gray-500">
-                <a href="{{ auth()->user()->url }}">{{ auth()->user()->username }}</a>
+                <a href="{{ route('users.show', ['user' => auth()->user()]) }}">{{ auth()->user()->username }}</a>
             </p>
         </div>
     </header>

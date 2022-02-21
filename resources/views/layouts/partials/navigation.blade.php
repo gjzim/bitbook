@@ -7,7 +7,7 @@
         </li>
 
         <li class="ml-2">
-            <a href="{{ auth()->user()->url }}" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
+            <a href="{{ route('users.show', ['user' => auth()->user()]) }}" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
                 Profile
             </a>
         </li>
