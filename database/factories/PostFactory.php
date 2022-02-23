@@ -14,5 +14,9 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        return [
+            'content' => $this->faker->paragraph(),
+            'user_id' => User::inRandomOrder()->first()->id,
+        ];
     }
 }
