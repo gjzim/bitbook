@@ -34,7 +34,7 @@
                             <img id="avatar-preview" class="max-h-96 mx-auto border-4 border-dashed p-2 mb-4"
                                 x-bind:src="curImg" alt="Avatar of {{ auth()->user()->name }}">
 
-                            <input xlass="text-sm" type="file" name="avatar" accept=".jpg,.png,.bmp" x-ref="fileInput"
+                            <input class="text-sm" type="file" name="avatar" accept=".jpg,.png,.bmp" x-ref="fileInput"
                                 @change="previewImg" required>
                         </div>
                     </div>
