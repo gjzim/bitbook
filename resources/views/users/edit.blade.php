@@ -92,9 +92,7 @@
                         <x-select id="country" name="country" :options="$countries"
                             :selected="old('country') ?? auth()->user()->country" />
 
-                        @error('country')
-                            <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <x-form-error field="country" />
                     </div>
                 </div>
 
@@ -106,9 +104,7 @@
                             {{ old('about') ?? auth()->user()->about }}
                         </x-textarea>
 
-                        @error('about')
-                            <span class="text-sm text-red-500" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <x-form-error field="about" />
                     </div>
                 </div>
 
