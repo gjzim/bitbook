@@ -258,6 +258,11 @@ class User extends Authenticatable implements HasMedia
             ->using(Friendship::class);
     }
 
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
