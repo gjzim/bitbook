@@ -15,7 +15,25 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'content' => ['required', 'string'],
+            'image' => ['nullable', 'mimes:jpg,bmp,png'],
+        ]);
+
+        $post = new Post([
+            'content' => $request->input('content'),
+        ]);
+
+        auth()->user()->posts()->save($post);
+
+        if ($request->hasFile('image')) {
+            $post->addMediaFromRequest('image')
+                ->setFileName($request->image->hashName())
+                ->toMediaCollection('images');
+        }
+
+        return redirect()->back()
+            ->with('message', 'Successfully published the status.');
     }
 
     /**

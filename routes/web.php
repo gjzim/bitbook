@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -69,5 +70,9 @@ Route::get('/users/{user}/friends/pending', [FriendshipController::class, 'pendi
 
 Route::get('/users/{user}/friends/suggestions', [FriendshipController::class, 'suggestionsIndex'])
     ->name('users.friends.suggestions')->middleware(['auth', 'can:update-friends,user']);
+
+// Post related routes
+Route::post('/posts', [PostController::class, 'store'])
+    ->name('posts.store')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
