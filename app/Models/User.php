@@ -79,8 +79,6 @@ class User extends Authenticatable implements HasMedia
     {
         $avatarConversions = ['thumb', 'small'];
 
-        return asset("images/anonymous.jpg");
-
         return in_array($size, $avatarConversions)
             ? asset("images/anonymous-{$size}.jpg")
             : asset("images/anonymous.jpg");
