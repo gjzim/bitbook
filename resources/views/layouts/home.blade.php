@@ -15,7 +15,5 @@
 
     @include('posts.partials.publish')
 
-    @foreach ($posts as $post)
-        @include('posts.single')
-    @endforeach
+    <x-posts-list url="{{ route('home.posts.index') }}" />
 @endsection
