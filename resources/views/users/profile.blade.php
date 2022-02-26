@@ -70,19 +70,10 @@
             <div class="mt-5 p-1 border border-gray-300">
                 <img src="{{ $user->getAvatarUrl('thumb') }}" alt="Avatar image of {{ $user->name }}" width="255px">
             </div>
-            <div>
-                @can('update', $user)
-                    <button
-                        class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
-                        <i class="fa fa-camera mr-1" aria-hidden="true"></i>
-                        Upload Photo
-                    </button>
-                @endcan
 
-                @can('add-as-friend', $user)
-                    @include('users.partials.friend-request-btn')
-                @endcan
-            </div>
+            @can('add-as-friend', $user)
+                @include('users.partials.friend-request-btn')
+            @endcan
         </div>
     </div>
 @endsection
