@@ -158,17 +158,32 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
-     * Get a collection of the ids of the users that have
-     * friendships(accepted, pending) with this user.
+     * Get a collection of the ids of the users that are
+     * friends with this user.
      *
      * @return Illuminate\Support\Collection
      */
-    protected function getRelatedUsersIds()
+    public function getFriendsIds()
+    {
+        return $this->getRelatedUsersIds('accepted');
+    }
+
+    /**
+     * Get a collection of the ids of the users that have
+     * friendships(accepted, pending) with this user.
+     *
+     * @param string status
+     * @return Illuminate\Support\Collection
+     */
+    protected function getRelatedUsersIds($friendshipStatus = '')
     {
         return Friendship::select('sender_id', 'receiver_id')
             ->where(function ($query) {
                 $query->where('sender_id', $this->id)
                     ->orWhere('receiver_id', $this->id);
+            })
+            ->when($friendshipStatus, function ($query, $friendshipStatus) {
+                $query->where('status', $friendshipStatus);
             })
             ->get()
             ->map(function ($friendship) {
