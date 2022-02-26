@@ -209,7 +209,8 @@ class User extends Authenticatable implements HasMedia
             ->reject(fn ($id) => $id === $this->id || $releatedUsersIds->contains($id))
             ->unique();
 
-        return User::whereIn('id', $suggestedFriendsIds)
+        return User::with('media')
+            ->whereIn('id', $suggestedFriendsIds)
             ->take($count)
             ->get();
     }
