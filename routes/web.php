@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home')->middleware('auth');
 
+Route::get('/home/posts', [HomeController::class, 'postsIndex'])
+    ->name('home.posts.index')->middleware(['auth']);
+
 Route::get('/users/{user}', [UserController::class, 'show'])
     ->name('users.show')->middleware(['auth']);
 
