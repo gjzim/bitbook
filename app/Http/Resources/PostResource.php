@@ -25,6 +25,8 @@ class PostResource extends JsonResource
                     'large' => $this->getMedia('images')->last()->getUrl('large'),
                 ];
             }),
+            'likes_count' => $this->likes_count ?: 0,
+            'liked_by_logged_in_user' => $this->likedByLoggedInUser ?: false,
             'visibility' => $this->visibility,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
