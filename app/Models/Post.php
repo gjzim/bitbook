@@ -30,6 +30,15 @@ class Post extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function authUserLike() {
+
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('images')
