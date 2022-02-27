@@ -1,6 +1,4 @@
-<div x-data="{
-    showCommentForm: false
-}" class="bg-gray-100 p-5 pt-4 mt-3">
+<div class="bg-gray-100 p-5 pt-4 mt-3">
     @include('posts.partials.content')
 
     <hr class="border-t border-gray-300 my-2">
