@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PostResource;
+use App\Models\Like;
 use App\Models\Post;
+use App\Http\Resources\PostResource;
 
 class HomeController extends Controller
 {
@@ -21,10 +22,33 @@ class HomeController extends Controller
     public function postsIndex()
     {
         $posts = Post::with(['author', 'author.media', 'media'])
+            ->withCount('likes')
             ->whereIn('user_id', [auth()->user()->id, ...auth()->user()->getFriendsIds()])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->tap([$this, 'addLikedByLoggedInUserAttribute']);
 
-        return PostResource::collection($posts);
+        return PostResource::Collection($posts);
+    }
+
+    /**
+     * Loop through each post in posts and add an extra attribute likedByLoggedInUser
+     */
+    public function addLikedByLoggedInUserAttribute($posts)
+    {
+        if (!auth()->check()) {
+            return;
+        }
+
+        $postIds = $posts->pluck('id');
+        $postsLikedByLoggedInUser = Like::select('post_id')
+            ->where('user_id', auth()->user()->id)
+            ->whereIn('post_id', $postIds)
+            ->get()
+            ->pluck('post_id');
+
+        $posts->each(function ($post) use ($postsLikedByLoggedInUser) {
+            $post->likedByLoggedInUser = $postsLikedByLoggedInUser->contains($post->id);
+        });
     }
 }
