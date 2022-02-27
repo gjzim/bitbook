@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
@@ -75,7 +76,19 @@ Route::get('/users/{user}/friends/suggestions', [FriendshipController::class, 's
     ->name('users.friends.suggestions')->middleware(['auth', 'can:update-friends,user']);
 
 // Post related routes
+Route::get('/posts', [PostController::class, 'index'])
+    ->name('posts.index')->middleware(['auth']);
+
 Route::post('/posts', [PostController::class, 'store'])
     ->name('posts.store')->middleware(['auth']);
+
+Route::get('/posts/{post}', [PostController::class, 'show'])
+    ->name('posts.show')->middleware(['auth']);
+
+Route::post('/posts/{post}/likes', [LikeController::class, 'store'])
+    ->name('posts.likes.store')->middleware(['auth']);
+
+Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])
+    ->name('posts.likes.destroy')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
