@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function indexComments(Post $post)
+    {
+        $comments = $post->comments()
+            ->with(['author', 'author.media'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(2);
+
+        return CommentResource::collection($comments);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

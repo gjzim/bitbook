@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
@@ -90,5 +91,17 @@ Route::post('/posts/{post}/likes', [LikeController::class, 'store'])
 
 Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])
     ->name('posts.likes.destroy')->middleware(['auth']);
+
+Route::get('/posts/{post}/comments', [PostController::class, 'indexComments'])
+    ->name('posts.comments.index')->middleware(['auth']);
+
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
+    ->name('comments.store')->middleware(['auth', 'can:comment,post']);
+
+Route::get('/comments', [CommentController::class, 'index'])
+    ->name('comments.index')->middleware(['auth']);
+
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+    ->name('comments.destroy')->middleware(['auth', 'can:delete,comment']);
 
 require __DIR__ . '/auth.php';
