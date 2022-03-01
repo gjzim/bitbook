@@ -1,11 +1,11 @@
-<div class="bg-gray-100 p-5 pt-4 mt-3">
+<div class="bg-gray-100 px-5 py-4 mt-3">
     @include('posts.partials.content')
 
-    <hr class="border-t border-gray-300 my-2">
+    <hr class="border-t border-gray-300 my-3">
 
     @include('posts.partials.actions')
 
-    <template x-if="'comments' in posts">
+    <template x-if="showComments && comments.length > 0">
         @include('comments.list')
     </template>
 
