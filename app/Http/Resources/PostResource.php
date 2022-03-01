@@ -27,6 +27,7 @@ class PostResource extends JsonResource
             }),
             'likes_count' => $this->likes_count ?: 0,
             'liked_by_logged_in_user' => $this->likedByLoggedInUser ?: false,
+            'comments_count' => $this->comments_count ?: 0,
             'visibility' => $this->visibility,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
