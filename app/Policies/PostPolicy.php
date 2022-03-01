@@ -57,6 +57,18 @@ class PostPolicy
     }
 
     /**
+     * Determine whether the user can comment on the post.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Post  $post
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function comment(User $user, Post $post)
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
