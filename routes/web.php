@@ -6,6 +6,7 @@ use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -103,5 +104,8 @@ Route::get('/comments', [CommentController::class, 'index'])
 
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
     ->name('comments.destroy')->middleware(['auth', 'can:delete,comment']);
+
+Route::get('/search', [SearchController::class, 'index'])
+    ->name('search')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
