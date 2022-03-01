@@ -282,6 +282,12 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Like::class);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
