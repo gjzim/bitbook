@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function postsIndex()
     {
         $posts = Post::with(['author', 'author.media', 'media'])
-            ->withCount('likes')
+            ->withCount(['likes', 'comments'])
             ->whereIn('user_id', [auth()->user()->id, ...auth()->user()->getFriendsIds()])
             ->orderBy('created_at', 'desc')
             ->paginate(10)
