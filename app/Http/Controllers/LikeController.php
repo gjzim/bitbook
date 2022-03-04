@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LikedPost;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
@@ -21,6 +22,8 @@ class LikeController extends Controller
             'post_id' => $post->id,
             'user_id' => auth()->user()->id,
         ]);
+
+        event(new LikedPost($post, auth()->user()));
 
         return response()->json([
             'success' => true,

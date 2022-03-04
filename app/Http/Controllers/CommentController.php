@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentedOnPost;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
@@ -36,6 +37,8 @@ class CommentController extends Controller
             'post_id' => $post->id,
             'user_id' => auth()->user()->id,
         ]);
+
+        event(new CommentedOnPost($post, auth()->user()));
 
         return response()->json([
             'success' => true,

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AcceptedFriendRequest;
+use App\Events\SentFriendRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -54,6 +56,8 @@ class FriendshipController extends Controller
 
         auth()->user()->sentFriendRequestsTo()->attach($receiver);
 
+        event(new SentFriendRequest(auth()->user(), $receiver));
+
         return response()->json([
             'success' => true,
             'message' => 'Successfully sent friend request.',
@@ -79,6 +83,8 @@ class FriendshipController extends Controller
                 'status' => 'accepted',
                 'accepted_at' => now()->toDateTimeString(),
             ]);
+
+            event(new AcceptedFriendRequest($sender, $receiver));
 
             $message = 'Successfully accepted the friendship request.';
         }
