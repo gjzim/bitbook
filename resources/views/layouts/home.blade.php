@@ -6,7 +6,9 @@
         <x-sidebar-menu-item to="{{ route('users.show', ['user' => auth()->user()]) }}" fa-class="fa-user">
             View Profile
         </x-sidebar-menu-item>
-        <x-sidebar-menu-item to="{{ auth()->user() }}" fa-class="fa-users">Friends</x-sidebar-menu-item>
+        <x-sidebar-menu-item to="{{ route('users.friends', ['user' => auth()->user()]) }}" fa-class="fa-users">
+            Friends
+        </x-sidebar-menu-item>
     </x-sidebar-menu>
 @endsection
 
