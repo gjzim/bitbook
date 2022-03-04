@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserAvatarController;
@@ -107,5 +108,14 @@ Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
 
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search')->middleware(['auth']);
+
+Route::get('/notifications', [NotificationController::class, 'index'])
+    ->name('notifications.index')->middleware(['auth']);
+
+Route::put('/notifications/{notification}', [NotificationController::class, 'markAsChecked'])
+    ->name('notifications.check')->middleware(['auth', 'can:update,notification']);
+
+Route::put('users/{user}/notifications', [UserController::class, 'checkAllUnreadNotifications'])
+    ->name('users.unread-notifications.check')->middleware(['auth', 'can:update,user']);
 
 require __DIR__ . '/auth.php';

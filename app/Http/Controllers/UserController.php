@@ -78,6 +78,24 @@ class UserController extends Controller
     }
 
     /**
+     * Mark all notifications of a user checked.
+     *
+     * @param  \App\Models\User  $User
+     * @return \Illuminate\Http\Response
+     */
+    public function checkAllUnreadNotifications(User $user)
+    {
+        $user->unreadNotifications()
+            ->update([
+                'checked' => true,
+                'checked_at' => now(),
+            ]);
+
+        return redirect()->back()
+            ->with('message', 'Successfully marked all notifications as read.');
+    }
+
+    /**
      * Show the confirmation form before deleting the specified resource.
      *
      * @param  \App\Models\User  $user
