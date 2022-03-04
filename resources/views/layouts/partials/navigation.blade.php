@@ -14,7 +14,7 @@
         </li>
 
         <li class="ml-2">
-            <a href="#" class="px-3 py-2 hover:bg-blue-500 hover:text-white">
+            <a x-data @click.prevent="$dispatch('open-notification-box')" class="px-3 py-2 cursor-pointer hover:bg-blue-500 hover:text-white">
                 Notifications
             </a>
         </li>
