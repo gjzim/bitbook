@@ -90,6 +90,7 @@ export default function singlePostCommentActions(postId, commentsCount = 0) {
                 .then(() => {
                     this.showComments = true;
                     this.hasCommentsLeft = true;
+                    this.commentsCount += 1;
 
                     if (this.currentCommentsPage == -1) {
                         this.loadComments();
@@ -113,6 +114,8 @@ export default function singlePostCommentActions(postId, commentsCount = 0) {
             axios
                 .delete(url)
                 .then(() => {
+                    this.commentsCount -= 1;
+
                     if (this.showComments) {
                         this.refreshComments();
                     }
