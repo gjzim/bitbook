@@ -287,6 +287,16 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Comment::class);
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->hasMany(Notification::class)
+            ->where('checked', false);
+    }
 
     public function registerMediaCollections(): void
     {
