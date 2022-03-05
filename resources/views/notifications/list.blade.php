@@ -28,13 +28,19 @@
         axios
             .put(`/notifications/${notification.id}`)
             .then(() => {
-                notification.checked = true
+                $dispatch('notification-checked', {notificationId: notification.id})
             })
             .catch((err) => {
                 console.log(err);
             });
+    },
+    markNotificationAsChecked(notificationId) {
+        const notification = this.notifications.find(n => n.id === notificationId)
+        if(notification) {
+            notification.checked = true
+        }
     }
-}" x-init="loadNotifications">
+}" x-init="loadNotifications" @notification-checked.window="markNotificationAsChecked($event.detail.notificationId)">
     <template x-for="notification in notifications" :key="notification.id">
         <div class="flex items-center border p-2 mb-3"
             :class="notification.checked ? 'bg-gray-50 border-gray-100' : 'bg-blue-50 border-blue-100'">
