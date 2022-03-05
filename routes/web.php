@@ -10,7 +10,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,98 +23,129 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home')->middleware('auth');
+/**
+ * Home routes definitions.
+ */
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])
+        ->name('home');
 
-Route::get('/home/posts', [HomeController::class, 'postsIndex'])
-    ->name('home.posts.index')->middleware(['auth']);
+    Route::get('/home/posts', [HomeController::class, 'postsIndex'])
+        ->name('home.posts.index');
+});
 
-Route::get('/users/{user}', [UserController::class, 'show'])
-    ->name('users.show')->middleware(['auth']);
+/**
+ * User profile routes definitions.
+ */
+Route::middleware(['auth'])->name('users.')->group(function () {
+    Route::get('/users/{user}', [UserController::class, 'show'])
+        ->name('show');
 
-Route::get('/users/{user}/posts', [UserController::class, 'posts'])
-    ->name('users.posts.show')->middleware(['auth']);
+    Route::get('/users/{user}/posts', [UserController::class, 'posts'])
+        ->name('posts.show');
 
-Route::get('/users/{user}/edit', [UserController::class, 'edit'])
-    ->name('users.edit')->middleware(['auth', 'can:update,user']);
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])
+        ->name('edit')->middleware(['can:update,user']);
 
-Route::put('/users/{user}', [UserController::class, 'update'])
-    ->name('users.update')->middleware(['auth', 'can:update,user']);
+    Route::put('/users/{user}', [UserController::class, 'update'])
+        ->name('update')->middleware(['can:update,user']);
 
-Route::post('/users/{user}/avatar/update', [UserAvatarController::class, 'update'])
-    ->name('users.avatar.update')->middleware(['auth', 'can:update,user']);
+    Route::post('/users/{user}/avatar/update', [UserAvatarController::class, 'update'])
+        ->name('avatar.update')->middleware(['can:update,user']);
 
-Route::get('/users/{user}/change-password', [ChangePasswordController::class, 'show'])
-    ->name('users.change.password')->middleware(['auth', 'can:update,user']);
+    Route::get('/users/{user}/change-password', [ChangePasswordController::class, 'show'])
+        ->name('change.password')->middleware(['can:update,user']);
 
-Route::post('/users/{user}/change-password', [ChangePasswordController::class, 'store'])
-    ->name('users.update.password')->middleware(['auth', 'can:update,user']);
+    Route::post('/users/{user}/change-password', [ChangePasswordController::class, 'store'])
+        ->name('update.password')->middleware(['can:update,user']);
 
-Route::get('/users/{user}/delete', [UserController::class, 'confirmDelete'])
-    ->name('users.delete.confirm')->middleware(['auth', 'can:update,user', 'password.confirm']);
+    Route::get('/users/{user}/delete', [UserController::class, 'confirmDelete'])
+        ->name('delete.confirm')->middleware(['can:update,user', 'password.confirm']);
 
-Route::delete('/users/{user}', [UserController::class, 'destroy'])
-    ->name('users.destroy')->middleware(['auth', 'can:update,user']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])
+        ->name('destroy')->middleware(['can:update,user']);
+});
 
-Route::post('users/{receiver}/friendships', [FriendshipController::class, 'create'])
-    ->name('users.friendships.create')
-    ->middleware(['auth', 'can:add-as-friend,receiver']);
+/**
+ * Friends & Friendship routes definitions.
+ */
+Route::middleware(['auth'])->name('users.')->group(function () {
+    Route::post('/users/{receiver}/friendships', [FriendshipController::class, 'create'])
+        ->name('friendships.create')->middleware(['can:add-as-friend,receiver']);
 
-Route::put('users/{sender}/friendships/{receiver}', [FriendshipController::class, 'update'])
-    ->name('users.friendships.update')
-    ->middleware(['auth']);
+    Route::put('/users/{sender}/friendships/{receiver}', [FriendshipController::class, 'update'])
+        ->name('friendships.update');
 
-Route::delete('users/{sender}/friendships/{receiver}', [FriendshipController::class, 'destroy'])
-    ->name('users.friendships.destroy')
-    ->middleware(['auth']);
+    Route::delete('/users/{sender}/friendships/{receiver}', [FriendshipController::class, 'destroy'])
+        ->name('friendships.destroy');
 
-Route::get('/users/{user}/friends', [FriendshipController::class, 'index'])
-    ->name('users.friends')->middleware(['auth', 'can:view-friends,user']);
+    Route::get('/users/{user}/friends', [FriendshipController::class, 'index'])
+        ->name('friends')->middleware(['can:view-friends,user']);
 
-Route::get('/users/{user}/friends/pending', [FriendshipController::class, 'pendingIndex'])
-    ->name('users.friends.pending')->middleware(['auth', 'can:update-friends,user']);
+    Route::get('/users/{user}/friends/pending', [FriendshipController::class, 'pendingIndex'])
+        ->name('friends.pending')->middleware(['can:update-friends,user']);
 
-Route::get('/users/{user}/friends/suggestions', [FriendshipController::class, 'suggestionsIndex'])
-    ->name('users.friends.suggestions')->middleware(['auth', 'can:update-friends,user']);
+    Route::get('/users/{user}/friends/suggestions', [FriendshipController::class, 'suggestionsIndex'])
+        ->name('friends.suggestions')->middleware(['can:update-friends,user']);
+});
 
-// Post related routes
-Route::get('/posts', [PostController::class, 'index'])
-    ->name('posts.index')->middleware(['auth']);
+/**
+ * Post routes definitions.
+ */
+Route::middleware(['auth'])->name('posts.')->group(function () {
+    Route::get('/posts', [PostController::class, 'index'])
+        ->name('index');
 
-Route::post('/posts', [PostController::class, 'store'])
-    ->name('posts.store')->middleware(['auth']);
+    Route::post('/posts', [PostController::class, 'store'])
+        ->name('store');
 
-Route::get('/posts/{post}', [PostController::class, 'show'])
-    ->name('posts.show')->middleware(['auth']);
+    Route::get('/posts/{post}', [PostController::class, 'show'])
+        ->name('show');
+});
 
-Route::post('/posts/{post}/likes', [LikeController::class, 'store'])
-    ->name('posts.likes.store')->middleware(['auth']);
+/**
+ * Post likes routes definitions.
+ */
+Route::middleware(['auth'])->name('posts.likes.')->group(function () {
+    Route::post('/posts/{post}/likes', [LikeController::class, 'store'])
+        ->name('store');
 
-Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])
-    ->name('posts.likes.destroy')->middleware(['auth']);
+    Route::delete('/posts/{post}/likes', [LikeController::class, 'destroy'])
+        ->name('destroy');
+});
 
-Route::get('/posts/{post}/comments', [PostController::class, 'indexComments'])
-    ->name('posts.comments.index')->middleware(['auth']);
+/**
+ * Post comments routes definitions.
+ */
+Route::middleware(['auth'])->group(function () {
+    Route::get('/posts/{post}/comments', [PostController::class, 'indexComments'])
+        ->name('posts.comments.index');
 
-Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
-    ->name('comments.store')->middleware(['auth', 'can:comment,post']);
+    Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
+        ->name('posts.comments.store')->middleware(['can:comment,post']);
 
-Route::get('/comments', [CommentController::class, 'index'])
-    ->name('comments.index')->middleware(['auth']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+        ->name('comments.destroy')->middleware(['can:delete,comment']);
+});
 
-Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
-    ->name('comments.destroy')->middleware(['auth', 'can:delete,comment']);
+/**
+ * Notification routes definitions.
+ */
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])
+        ->name('notifications.index');
 
+    Route::put('/notifications/{notification}', [NotificationController::class, 'markAsChecked'])
+        ->name('notifications.check')->middleware(['can:update,notification']);
+
+    Route::put('users/{user}/notifications', [UserController::class, 'checkAllUnreadNotifications'])
+        ->name('users.unread-notifications.check')->middleware(['can:update,user']);
+});
+
+/**
+ * Search routes definitions.
+ */
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search')->middleware(['auth']);
-
-Route::get('/notifications', [NotificationController::class, 'index'])
-    ->name('notifications.index')->middleware(['auth']);
-
-Route::put('/notifications/{notification}', [NotificationController::class, 'markAsChecked'])
-    ->name('notifications.check')->middleware(['auth', 'can:update,notification']);
-
-Route::put('users/{user}/notifications', [UserController::class, 'checkAllUnreadNotifications'])
-    ->name('users.unread-notifications.check')->middleware(['auth', 'can:update,user']);
 
 require __DIR__ . '/auth.php';
