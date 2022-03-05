@@ -24,6 +24,7 @@
                                 axios.put(url, { action: 'accept-friendship' })
                                 .then(response => {
                                     this.status = 'friends'
+                                    $dispatch('friend-request-accepted')
                                 })
                                 .catch(err => console.log('Something has gone wrong!'))
                             },

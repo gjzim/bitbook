@@ -9,7 +9,7 @@
             fa-class="fa-user-plus">
             Friend Requests
             @if (auth()->user()->pendingFriendRequestsCount() > 0)
-                <x-notification-count-bubble :count="auth()->user()->pendingFriendRequestsCount()" class="ml-2"/>
+                <x-notification-count-bubble @friend-request-accepted.window="count -= 1" :count="auth()->user()->pendingFriendRequestsCount()" class="ml-2"/>
             @endif
         </x-sidebar-menu-item>
         <x-sidebar-menu-item to="{{ route('users.friends.suggestions', ['user' => auth()->user()]) }}"
