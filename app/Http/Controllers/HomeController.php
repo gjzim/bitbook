@@ -26,29 +26,8 @@ class HomeController extends Controller
             ->whereIn('user_id', [auth()->user()->id, ...auth()->user()->getFriendsIds()])
             ->orderBy('created_at', 'desc')
             ->paginate(10)
-            ->tap([$this, 'addLikedByLoggedInUserAttribute']);
+            ->tap('add_liked_by_logged_in_user_attribute');
 
         return PostResource::Collection($posts);
-    }
-
-    /**
-     * Loop through each post in posts and add an extra attribute likedByLoggedInUser
-     */
-    public function addLikedByLoggedInUserAttribute($posts)
-    {
-        if (!auth()->check()) {
-            return;
-        }
-
-        $postIds = $posts->pluck('id');
-        $postsLikedByLoggedInUser = Like::select('post_id')
-            ->where('user_id', auth()->user()->id)
-            ->whereIn('post_id', $postIds)
-            ->get()
-            ->pluck('post_id');
-
-        $posts->each(function ($post) use ($postsLikedByLoggedInUser) {
-            $post->likedByLoggedInUser = $postsLikedByLoggedInUser->contains($post->id);
-        });
     }
 }
