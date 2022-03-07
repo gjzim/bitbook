@@ -42,7 +42,7 @@ Route::middleware(['auth'])->name('users.')->group(function () {
         ->name('show');
 
     Route::get('/users/{user}/posts', [UserController::class, 'posts'])
-        ->name('posts.show');
+        ->name('posts')->middleware('can:view-posts,user');
 
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])
         ->name('edit')->middleware(['can:update,user']);

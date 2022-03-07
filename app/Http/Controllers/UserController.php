@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
+use App\Models\Post;
 use App\Models\User;
 use App\Services\CountriesListService;
 use Illuminate\Http\Request;
@@ -28,12 +30,24 @@ class UserController extends Controller
     /**
      * Display the posts of a user.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function posts(User $user)
+    public function posts(Request $request, User $user)
     {
-        return view('users.profile', ['user' => $user]);
+        if ($request->ajax()) {
+            $posts = Post::with(['author', 'author.media', 'media'])
+                ->withCount(['likes', 'comments'])
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->tap('add_liked_by_logged_in_user_attribute');
+
+            return PostResource::Collection($posts);
+        }
+
+        return view('users.posts', ['user' => $user]);
     }
 
     /**
