@@ -69,6 +69,18 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can view posts of the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function viewPosts(User $user, User $model)
+    {
+        return $user->id === $model->id || $user->getFriendsIds()->contains($model->id);
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
