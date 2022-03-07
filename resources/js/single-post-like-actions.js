@@ -1,7 +1,9 @@
-export default function singlePostLikeActions(postId, likesCount = 0, isLiked = false) {
+export default function singlePostLikeActions(post, options) {
     return {
-        likesCount: likesCount,
-        isLiked: isLiked,
+        likesCount: post.likes_count,
+        isLiked: post.liked_by_logged_in_user,
+
+        likeActionsInit() {},
 
         likeClickHandler() {
             if (this.isLiked) {
@@ -12,7 +14,7 @@ export default function singlePostLikeActions(postId, likesCount = 0, isLiked = 
         },
 
         likePost() {
-            const url = `/posts/${postId}/likes`;
+            const url = `/posts/${post.id}/likes`;
             axios
                 .post(url)
                 .then((response) => {
@@ -29,7 +31,7 @@ export default function singlePostLikeActions(postId, likesCount = 0, isLiked = 
                 return;
             }
 
-            const url = `/posts/${postId}/likes`;
+            const url = `/posts/${post.id}/likes`;
             axios
                 .delete(url)
                 .then((response) => {

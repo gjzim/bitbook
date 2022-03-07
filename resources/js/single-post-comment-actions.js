@@ -1,13 +1,20 @@
-export default function singlePostCommentActions(postId, commentsCount = 0) {
+export default function singlePostCommentActions(post, options) {
     return {
         showComments: false,
-        showCommentsForm: false,
+        showCommentsForm: options.showCommentsForm,
         comments: [],
-        commentsCount: commentsCount,
-        hasCommentsLeft: commentsCount > 0,
+        commentsCount: post.comments_count,
+        hasCommentsLeft: post.comments_count > 0,
         currentCommentsPage: -1,
-        postCommentsUrl: `/posts/${postId}/comments`,
-        nextCommentsPageUrl: `/posts/${postId}/comments`,
+        postCommentsUrl: `/posts/${post.id}/comments`,
+        nextCommentsPageUrl: `/posts/${post.id}/comments`,
+
+        commentsActionsinit() {
+            if (options.initLoadComments) {
+                this.showComments = options.initLoadComments;
+                this.loadComments();
+            }
+        },
 
         showHideCommentsBtnClickHandler() {
             if (this.showComments) {
