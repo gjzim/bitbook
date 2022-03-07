@@ -3,21 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\PostResource;
+use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function indexComments(Post $post)
-    {
-        $comments = $post->comments()
-            ->with(['author', 'author.media'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(2);
-
-        return CommentResource::collection($comments);
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -55,30 +47,27 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post->likedByLoggedInUser = Like::where('post_id', $post->id)
+            ->where('user_id', auth()->user()->id)
+            ->exists();
+
+        $post->load(['media', 'author', 'author.media'])->loadCount(['comments', 'likes']);
+
+        return view('posts.show', ['post' => new PostResource($post)]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * Return a json collection response of this post's paginated comments.
      */
-    public function update(Request $request, Post $post)
+    public function indexComments(Post $post)
     {
-        //
+        $comments = $post->comments()
+            ->with(['author', 'author.media'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return CommentResource::collection($comments);
     }
 
     /**
