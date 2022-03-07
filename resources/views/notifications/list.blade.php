@@ -1,27 +1,35 @@
 <div x-data="{
+    loaded: false,
     notifications: [],
     hasNotificationsLeft: true,
     currentNotificationsPage: -1,
     nextNotificationsPageUrl: `/notifications`,
+    loadNotificationsIfNotLoaded() {
+        if(!this.loaded) {
+            this.loadNotifications()
+        }
+    },
     loadNotifications() {
         if (!this.hasNotificationsLeft) {
-            return;
+            return
         }
 
         axios
             .get(this.nextNotificationsPageUrl)
             .then((response) => {
-                const { data: notifications, links, meta } = response.data;
-                this.notifications = this.notifications.concat(notifications);
-                this.currentNotificationsPage = meta.current_page;
-                this.nextNotificationsPageUrl = links.next;
+                const { data: notifications, links, meta } = response.data
+                this.notifications = this.notifications.concat(notifications)
+                this.currentNotificationsPage = meta.current_page
+                this.nextNotificationsPageUrl = links.next
 
                 if (meta.current_page == meta.last_page) {
-                    this.hasNotificationsLeft = false;
+                    this.hasNotificationsLeft = false
                 }
+
+                this.loaded = true
             })
             .catch((err) => {
-                console.log(err);
+                console.log(err)
             });
     },
     checkNotification(notification) {
@@ -31,7 +39,7 @@
                 $dispatch('notification-checked', {notificationId: notification.id})
             })
             .catch((err) => {
-                console.log(err);
+                console.log(err)
             });
     },
     markNotificationAsChecked(notificationId) {
@@ -40,7 +48,8 @@
             notification.checked = true
         }
     }
-}" x-init="loadNotifications" @notification-checked.window="markNotificationAsChecked($event.detail.notificationId)">
+}" @notification-checked.window="markNotificationAsChecked($event.detail.notificationId)"
+    @open-notification-box.window="loadNotificationsIfNotLoaded">
     <template x-for="notification in notifications" :key="notification.id">
         <div class="flex items-center border p-2 mb-3"
             :class="notification.checked ? 'bg-gray-50 border-gray-100' : 'bg-blue-50 border-blue-100'">
@@ -63,7 +72,7 @@
     </template>
 
     @isset($showLoadMoreButton)
-        <button @click="loadNotifications" x-show="hasNotificationsLeft"
+        <button x-init="loadNotifications" @click="loadNotifications" x-show="hasNotificationsLeft"
             class="flex mx-auto mt-5 bg-gray-500 text-center text-white px-4 py-1 hover:bg-gray-600 cursor-pointer">
             Load more
         </button>
