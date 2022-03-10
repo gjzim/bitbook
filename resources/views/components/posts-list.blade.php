@@ -32,7 +32,7 @@
         @include('posts.single.skeleton')
     </div>
 
-    <div x-show="!hasPostsLeft" class="bg-yellow-100 text-center py-4 mb-10">
+    <div x-show="!hasPostsLeft" class="bg-yellow-100 text-center py-4 mt-6 mb-10">
         No more posts available.
     </div>
 </div>
