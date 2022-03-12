@@ -15,9 +15,15 @@ class UserAvatarController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'avatar' => 'mimes:jpg,bmp,png',
-        ]);
+        $request->validate(
+            [
+                'avatar' => ['mimes:jpg,bmp,png', 'max:5120'],
+            ],
+            [
+                'avatar.max' => 'Image size must be less than 5MB.',
+                'avatar.mimes' => 'Only .jpg, .bmp, and .png files are allowed.',
+            ]
+        );
 
         $user->addMediaFromRequest('avatar')
             ->setFileName($request->avatar->hashName())
@@ -26,5 +32,4 @@ class UserAvatarController extends Controller
         return redirect()->route('users.edit', ['user' => $user])
             ->with('message', 'Successfully changed the avatar.');
     }
-
 }

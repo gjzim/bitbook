@@ -115,6 +115,17 @@
                         <x-form-message />
                     @endif
 
+                    @error('avatar')
+                        <div class="flex items-center justify-between bg-red-600 my-2 py-1 pl-3 pr-2 text-white"
+                            x-data="{ show: true }" x-show="show">
+                            {{ $message }}
+
+                            <span @click="show = false" class="ml-3 cursor-pointer">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    @enderror
+
                     <x-button class="ml-auto">{{ __('Save Changes') }}</x-button>
                 </div>
             </form>
@@ -124,13 +135,12 @@
             <div class="mt-5 p-1 border border-gray-300">
                 <img src="{{ auth()->user()->getAvatarUrl('thumb') }}" alt="" class="mx-auto w-full">
             </div>
-            <div>
-                <button x-data @click="$dispatch('open-avatar-modal')"
-                    class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
-                    <i class="fa fa-camera mr-1" aria-hidden="true"></i>
-                    Change Photo
-                </button>
-            </div>
+
+            <button x-data @click="$dispatch('open-avatar-modal')"
+                class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
+                <i class="fa fa-camera mr-1" aria-hidden="true"></i>
+                Change Photo
+            </button>
         </div>
     </div>
 @endsection

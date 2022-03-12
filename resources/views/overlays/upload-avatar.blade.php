@@ -7,11 +7,26 @@
         this.$refs.fileInput.val = ''
     },
     previewImg() {
+        const selectedFile = this.$refs.fileInput.files[0]
+
+        if( !this.validateImg(selectedFile) ) {
+            alert('File size can\'t be larger than 5mb. Please choose a smaller file.')
+            this.$refs.form.reset()
+
+            return
+        }
+
         const reader = new FileReader()
-        reader.onload = () => this.curImg = reader.result
-        reader.readAsDataURL(this.$refs.fileInput.files[0]);
+        reader.onload = () => {
+            this.curImg = reader.result
+        }
+
+        reader.readAsDataURL(selectedFile);
+    },
+    validateImg(file) {
+        return file.size < 5 * 1024 * 1024
     }
-}" x-show="open" @keyup.escape.window="close" @open-avatar-modal.window="open = true"
+}" x-show="open" x-init="$refs.form.reset()" @keyup.escape.window="close" @open-avatar-modal.window="open = true"
     class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -22,7 +37,7 @@
 
         <div @click.outside="close"
             class="inline-block align-bottom bg-white text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form method="POST" action="{{ route('users.avatar.update', auth()->user()) }}"
+            <form x-ref="form" method="POST" action="{{ route('users.avatar.update', auth()->user()) }}"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -34,8 +49,8 @@
                             <img id="avatar-preview" class="max-h-96 mx-auto border-4 border-dashed p-2 mb-4"
                                 x-bind:src="curImg" alt="Avatar of {{ auth()->user()->name }}">
 
-                            <input class="text-sm" type="file" name="avatar" accept=".jpg,.png,.bmp" x-ref="fileInput"
-                                @change="previewImg" required>
+                            <input class="text-sm" type="file" name="avatar" accept=".jpg,.png,.bmp"
+                                x-ref="fileInput" @change="previewImg" required>
                         </div>
                     </div>
                 </div>
