@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -309,11 +310,13 @@ class User extends Authenticatable implements HasMedia
         $this->addMediaConversion('thumb')
             ->width(255)
             ->height(255)
+            ->fit(Manipulations::FIT_MAX, 255, 255)
             ->performOnCollections('avatar');
 
         $this->addMediaConversion('small')
             ->width(50)
             ->height(50)
+            ->fit(Manipulations::FIT_MAX, 50, 50)
             ->performOnCollections('avatar');
     }
 
