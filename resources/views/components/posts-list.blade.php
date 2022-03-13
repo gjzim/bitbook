@@ -32,7 +32,6 @@
         @include('posts.single.skeleton')
     </div>
 
-    <div x-show="!hasPostsLeft" class="bg-yellow-100 text-center py-4 mt-6 mb-10">
-        No more posts available.
-    </div>
+    <div x-show="!hasPostsLeft" x-text="posts.length === 0 ? 'No posts available.' : 'No more posts available.'"
+        class="bg-yellow-100 text-center py-4 mt-6 mb-10"></div>
 </div>
