@@ -1,5 +1,7 @@
 @extends('layouts.users')
 
+@section('title', 'Change password')
+
 @section('content')
     <div>
         <h1 class="text-4xl font-bold text-gray-700">Change Password </h1>

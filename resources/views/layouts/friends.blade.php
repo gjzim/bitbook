@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', 'Friends')
+
 @section('sidebar-menu')
     <x-sidebar-menu>
         <x-sidebar-menu-item to="{{ route('users.friends', ['user' => auth()->user()]) }}" fa-class="fa-user-friends">

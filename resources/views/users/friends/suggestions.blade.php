@@ -1,5 +1,7 @@
 @extends('layouts.friends')
 
+@section('title', 'People You May Know')
+
 @section('content')
     <div>
         <h1 class="text-4xl font-bold text-gray-700">People You May Know</h1>

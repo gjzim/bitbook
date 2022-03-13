@@ -1,4 +1,6 @@
 <x-guest-layout>
+    @section('title', 'Create new account')
+
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">

@@ -1,5 +1,7 @@
 @extends('layouts.users')
 
+@section('title', $user->name)
+
 @section('content')
     <div class="flex justify-between">
         <div class="w-3/4 mr-10">

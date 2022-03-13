@@ -1,5 +1,7 @@
 @extends('layouts.friends')
 
+@section('title', 'Friend Requests')
+
 @section('content')
     <div>
         <h1 class="text-4xl font-bold text-gray-700">Friend Requests</h1>

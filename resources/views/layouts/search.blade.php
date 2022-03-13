@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', 'Search')
+
 @section('sidebar-menu')
     <x-sidebar-menu>
         <x-sidebar-menu-item to="{{ route('search') }}" fa-class="fa-search">

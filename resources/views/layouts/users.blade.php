@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', 'Users')
+
 @section('sidebar-menu')
     <x-sidebar-menu>
         <x-sidebar-menu-item to="{{ route('users.show', ['user' => $user]) }}" fa-class="fa-user">About

@@ -1,5 +1,7 @@
 @extends('layouts.users')
 
+@section('title', "Posts by {$user->name}")
+
 @section('content')
     <div>
         <h2 class="text-4xl font-bold text-gray-700">{{ "Posts by {$user->name}" }}</h2>

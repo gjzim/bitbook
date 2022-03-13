@@ -1,8 +1,10 @@
 @extends('layouts.users')
 
+@section('title', 'Delete profile')
+
 @section('content')
     <div class="">
-        <h1 class="text-4xl font-bold text-gray-700">Delete Profile </h1>
+        <h1 class="text-4xl font-bold text-gray-700">Delete Profile</h1>
 
         <hr class="border-t border-gray-300 mt-3 mb-6">
 
