@@ -7,7 +7,7 @@
             &middot;
             <a @click.prevent="showCommentsForm = true" class="cursor-pointer ml-1">Add Comment</a>
         </li>
-        <li>
+        <li x-cloak x-show="commentsCount > 0">
             &middot;
             <a @click.prevent="showHideCommentsBtnClickHandler"
                 x-text="showComments ? 'Hide Comments' : 'Show Comments'" class="cursor-pointer ml-1"></a>
