@@ -17,11 +17,16 @@ class UserAvatarController extends Controller
     {
         $request->validate(
             [
-                'avatar' => ['mimes:jpg,bmp,png', 'max:5120'],
+                'avatar' => [
+                    'mimes:jpg,bmp,png',
+                    'min:25',
+                    'max:5120'
+                ],
             ],
             [
-                'avatar.max' => 'Image size must be less than 5MB.',
                 'avatar.mimes' => 'Only .jpg, .bmp, and .png files are allowed.',
+                'avatar.min' => 'Image size must be greater than 25KB.',
+                'avatar.max' => 'Image size must be less than 5MB.',
             ]
         );
 

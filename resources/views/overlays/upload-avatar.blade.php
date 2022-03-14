@@ -9,9 +9,16 @@
     previewImg() {
         const selectedFile = this.$refs.fileInput.files[0]
 
-        if( !this.validateImg(selectedFile) ) {
-            alert('File size can\'t be larger than 5mb. Please choose a smaller file.')
+        if( selectedFile.size >= 5 * 1024 * 1024 ) {
             this.$refs.form.reset()
+            alert('File size can\'t be larger than 5mb. Please choose a smaller file.')
+
+            return
+        }
+
+        if(selectedFile.size < 25 * 1024) {
+            this.$refs.form.reset()
+            alert('File size can\'t be smaller than 25KB. Please choose a larger file.')
 
             return
         }
@@ -22,9 +29,6 @@
         }
 
         reader.readAsDataURL(selectedFile);
-    },
-    validateImg(file) {
-        return file.size < 5 * 1024 * 1024
     }
 }" x-cloak x-show="open" x-init="$refs.form.reset()" @keyup.escape.window="close" @open-avatar-modal.window="open = true"
     class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
