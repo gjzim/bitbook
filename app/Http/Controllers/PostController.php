@@ -18,10 +18,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'content' => ['required', 'string'],
-            'image' => ['nullable', 'mimes:jpg,bmp,png'],
-        ]);
+        $request->validate(
+            [
+                'content' => ['nullable', 'string'],
+                'image' => [
+                    'required_without:content',
+                    'mimes:jpg,bmp,png',
+                    'min:25',
+                    'max:5120',
+                ],
+            ],
+            [
+                'image.mimes' => 'Only .jpg, .bmp, and .png files are allowed.',
+                'image.min' => 'Image size must be greater than 25KB.',
+                'image.max' => 'Image size must be less than 5MB.',
+            ],
+        );
 
         $post = new Post([
             'content' => $request->input('content'),

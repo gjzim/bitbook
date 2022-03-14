@@ -1,21 +1,50 @@
 <div class="bg-gray-100 p-5">
     <h3 class="text-2xl leading-none font-bold text-gray-600 mb-4">What's on your mind?</h3>
 
-    <form x-init="$el.reset()" class="mt-2" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+    <form x-data="{
+        error: '',
+        handleFormSubmission() {
+            if(this.$el.elements.content.value === '' && this.$el.elements.image.value === '') {
+                this.error = 'Please select an image or add some text before submitting!'
+
+                return
+            }
+
+            this.error = ''
+            this.$el.submit()
+        }
+    }" x-init="$el.reset()" @submit.prevent="handleFormSubmission" class="mt-2"
+        action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="my-2">
             <x-label for="content" :value="__('Status:')" class="hidden" />
-            <x-textarea name="content" id="content" class="w-full" rows="3" required></x-textarea>
-            <x-form-error field="content" />
+            <x-textarea name="content" id="content" class="w-full" rows="3"></x-textarea>
         </div>
 
         <div x-data="{
             curImg: '',
             previewImg(event) {
+                const selectedFile = event.target.files[0]
+
+                if( selectedFile.size >= 5 * 1024 * 1024 ) {
+                    alert('File size can\'t be larger than 5MB. Please choose a smaller file.')
+
+                    return
+                }
+
+                if(selectedFile.size < 25 * 1024) {
+                    alert('File size can\'t be smaller than 25KB. Please choose a larger file.')
+
+                    return
+                }
+
                 const reader = new FileReader()
-                reader.onload = () => this.curImg = reader.result
-                reader.readAsDataURL(event.target.files[0]);
+                reader.onload = () => {
+                    this.curImg = reader.result
+                }
+
+                reader.readAsDataURL(selectedFile);
             }
         }" class="flex items-center justify-between">
             <div class="flex items-center">
@@ -44,5 +73,13 @@
                 Publish
             </button>
         </div>
+
+        @error('image')
+            <span class="my-1 text-sm text-red-500" role="alert">
+                <strong>**{{ $message }}</strong>
+            </span>
+        @enderror
+
+        <div x-show="error !== ''" x-text="'**' + error" class="my-1 text-sm font-bold text-red-500"></div>
     </form>
 </div>
