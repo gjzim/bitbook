@@ -9,7 +9,7 @@ export default function singlePostCommentActions(post, options) {
         postCommentsUrl: `/posts/${post.id}/comments`,
         nextCommentsPageUrl: `/posts/${post.id}/comments`,
 
-        commentsActionsinit() {
+        commentsActionsInit() {
             if (options.initLoadComments) {
                 this.showComments = options.initLoadComments;
                 this.loadComments();

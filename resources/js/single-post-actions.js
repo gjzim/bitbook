@@ -11,7 +11,7 @@ export default function singlePostActions(post, options = {}) {
         ...singlePostCommentActions(post, options),
         init() {
             this.likeActionsInit();
-            this.commentsActionsinit();
+            this.commentsActionsInit();
         }
     };
 }
