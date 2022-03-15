@@ -29,6 +29,7 @@ class PostResource extends JsonResource
             'liked_by_logged_in_user' => $this->likedByLoggedInUser ?: false,
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'comments_count' => $this->comments_count ?: 0,
+            'deletable_by_logged_in_user' => auth()->user()->can('delete', $this->resource),
             'visibility' => $this->visibility,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

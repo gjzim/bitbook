@@ -23,7 +23,10 @@
             console.log(err)
         })
     },
-}">
+    deletePost(event) {
+        this.posts = this.posts.filter(post => post.id !== event.detail.postId)
+    }
+}" @post-deleted.window="deletePost">
     <template x-for="post in posts" :key="post.id">
         @include('posts.single.index')
     </template>

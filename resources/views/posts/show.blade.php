@@ -5,7 +5,8 @@
             JSON.parse('{{ $post->toJson() }}'),
             {
                 showCommentsForm: true,
-                initLoadComments: true
+                initLoadComments: true,
+                redirectOnDelete: true,
             }
         )"
         class="mb-8">
