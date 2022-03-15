@@ -8,6 +8,10 @@
 
         <hr class="border-t border-gray-300 my-3">
 
+        @if (auth()->user()->id === $user->id)
+            @include('posts.partials.publish')
+        @endif
+
         <x-posts-list url="{{ route('users.posts', ['user' => $user]) }}" />
     </div>
 @endsection
