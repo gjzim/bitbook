@@ -20,9 +20,11 @@
 
     <section class="mt-1 mb-4">
         <nav>
-            @yield('sidebar-menu')
+            @hasSection('sidebar-menu')
+                @yield('sidebar-menu')
 
-            <hr class="border-t border-gray-300 mx-3 my-2">
+                <hr class="border-t border-gray-300 mx-3 my-2">
+            @endif
 
             <ul>
                 <li>
