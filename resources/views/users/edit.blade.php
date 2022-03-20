@@ -135,7 +135,8 @@
 
         <div class="w-1/4">
             <div class="mt-5 p-1 border border-gray-300">
-                <img src="{{ auth()->user()->getAvatarUrl('thumb') }}" alt="" class="mx-auto w-full">
+                <img x-data @click="$dispatch('open-avatar-modal')" src="{{ auth()->user()->getAvatarUrl('thumb') }}"
+                    alt="" class="mx-auto w-full cursor-pointer">
             </div>
 
             <button x-data @click="$dispatch('open-upload-avatar-modal')"
@@ -146,12 +147,12 @@
 
             @if (auth()->user()->hasAvatar())
                 <form x-data="{
-                                submitHandler() {
-                                    if(confirm('Do you really want to remove your avatar image?')) {
-                                        $el.submit()
+                                    submitHandler() {
+                                        if(confirm('Do you really want to remove your avatar image?')) {
+                                            $el.submit()
+                                        }
                                     }
-                                }
-                            }" @submit.prevent="submitHandler" method="POST"
+                                }" @submit.prevent="submitHandler" method="POST"
                     action="{{ route('users.avatar.destroy', auth()->user()) }}">
                     @csrf
                     @method('DELETE')
@@ -169,4 +170,5 @@
 
 @push('overlays')
     @include('overlays.upload-avatar')
+    @include('overlays.avatar-modal')
 @endpush
