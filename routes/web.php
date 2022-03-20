@@ -53,6 +53,9 @@ Route::middleware(['auth'])->name('users.')->group(function () {
     Route::post('/users/{user}/avatar/update', [UserAvatarController::class, 'update'])
         ->name('avatar.update')->middleware(['can:update,user']);
 
+    Route::delete('/users/{user}/avatar', [UserAvatarController::class, 'destroy'])
+        ->name('avatar.destroy')->middleware(['can:update,user']);
+
     Route::get('/users/{user}/change-password', [ChangePasswordController::class, 'show'])
         ->name('change.password')->middleware(['can:update,user']);
 

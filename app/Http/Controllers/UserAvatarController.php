@@ -37,4 +37,18 @@ class UserAvatarController extends Controller
         return redirect()->route('users.edit', ['user' => $user])
             ->with('message', 'Successfully changed the avatar.');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+        $user->clearMediaCollection('avatar');
+
+        return redirect()->route('users.edit', ['user' => $user])
+            ->with('message', 'Successfully removed the avatar.');
+    }
 }

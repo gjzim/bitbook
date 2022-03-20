@@ -85,6 +85,11 @@ class User extends Authenticatable implements HasMedia
             : asset("images/anonymous.jpg");
     }
 
+    public function hasAvatar()
+    {
+        return $this->getMedia('avatar')->isNotEmpty();
+    }
+
     /**
      * Get a query builder instace to find the friendship model between
      * this user and another user.

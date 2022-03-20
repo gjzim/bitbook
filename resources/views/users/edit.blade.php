@@ -143,6 +143,26 @@
                 <i class="fa fa-camera mr-1" aria-hidden="true"></i>
                 Change Photo
             </button>
+
+            @if (auth()->user()->hasAvatar())
+                <form x-data="{
+                                submitHandler() {
+                                    if(confirm('Do you really want to remove your avatar image?')) {
+                                        $el.submit()
+                                    }
+                                }
+                            }" @submit.prevent="submitHandler" method="POST"
+                    action="{{ route('users.avatar.destroy', auth()->user()) }}">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit"
+                        class="block mx-auto mt-2 w-full py-2 border border-gray-300 bg-gray-200 hover:bg-gray-300 text-black">
+                        <i class="fa fa-trash mr-1" aria-hidden="true"></i>
+                        Remove Photo
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
 @endsection
