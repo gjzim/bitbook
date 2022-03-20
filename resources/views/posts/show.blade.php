@@ -2,7 +2,7 @@
 
 @section('content')
     <div x-data="singlePostActions(
-            JSON.parse('{{ $post->toJson() }}'),
+            {{ \Illuminate\Support\Js::from($post) }},
             {
                 showCommentsForm: true,
                 initLoadComments: true,
