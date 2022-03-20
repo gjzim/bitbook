@@ -30,7 +30,7 @@
 
         reader.readAsDataURL(selectedFile);
     }
-}" x-cloak x-show="open" x-init="$refs.form.reset()" @keyup.escape.window="close" @open-avatar-modal.window="open = true"
+}" x-cloak x-show="open" x-init="$refs.form.reset()" @keyup.escape.window="close" @open-upload-avatar-modal.window="open = true"
     class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
