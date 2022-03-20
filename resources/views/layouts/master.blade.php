@@ -19,5 +19,5 @@
         @include('notifications.box')
     </div>
 
-    @yield('overlays')
+    @stack('overlays')
 @endsection

@@ -147,6 +147,6 @@
     </div>
 @endsection
 
-@section('overlays')
+@push('overlays')
     @include('overlays.upload-avatar')
-@endsection
+@endpush
