@@ -36,7 +36,7 @@
                 open: false,
                 curImg: '{{ auth()->user()->getAvatarUrl() }}',
                 init() {
-                    // this.$refs.form.reset()
+                    this.$refs.form.reset()
                 },
                 close() {
                     this.curImg = '{{ auth()->user()->getAvatarUrl() }}'
