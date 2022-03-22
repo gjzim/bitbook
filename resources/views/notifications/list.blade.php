@@ -1,5 +1,6 @@
 <div x-data="{
     loaded: false,
+    fallBackImg: '{{ \App\Models\Notification::getDefaultImgUrl() }}',
     notifications: [],
     hasNotificationsLeft: true,
     currentNotificationsPage: -1,
@@ -54,7 +55,8 @@
         <div class="flex items-center border p-2 mb-3"
             :class="notification.checked ? 'bg-gray-50 border-gray-100' : 'bg-blue-50 border-blue-100'">
             <a class="mr-4" x-bind:href="notification.url">
-                <img x-bind:src="notification.image_url" alt="Notificaiton image">
+                <img x-bind:src="notification.image_url" alt="Notificaiton image"
+                    x-on:error="notification.image_url = fallBackImg">
             </a>
             <div class="flex w-full justify-between items-center text-sm text-gray-800"
                 :class="notification.checked || 'font-semibold'">
