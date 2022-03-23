@@ -19,7 +19,9 @@ class NotificationResource extends JsonResource
             'type' => $this->type,
             'checked' => (bool) $this->checked,
             'text' => $this->text,
-            'url' => $this->url,
+            'url' => $this->checked
+                ? $this->url
+                : route('notifications.show', ['notification' => $this]),
             'image_url' => $this->image_url,
             'checked_at' => $this->checked_at,
             'created_at' => $this->created_at,

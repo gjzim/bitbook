@@ -141,6 +141,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])
         ->name('notifications.index');
 
+    Route::get('/notifications/{notification}', [NotificationController::class, 'show'])
+        ->name('notifications.show')->middleware(['can:update,notification']);
+
     Route::put('/notifications/{notification}', [NotificationController::class, 'markAsChecked'])
         ->name('notifications.check')->middleware(['can:update,notification']);
 

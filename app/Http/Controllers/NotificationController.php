@@ -29,6 +29,23 @@ class NotificationController extends Controller
     }
 
     /**
+     * Display the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Notification $notification)
+    {
+        if (!$notification->checked) {
+            $notification->update([
+                'checked' => true,
+                'checked_at' => now()
+            ]);
+        }
+
+        return redirect()->to($notification->url);
+    }
+
+    /**
      * Mark the notification as checked.
      *
      * @param  \App\Models\Notification  $notification
