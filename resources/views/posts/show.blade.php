@@ -1,5 +1,7 @@
 @extends('layouts.post')
 
+@section('title', $pageTitle)
+
 @section('content')
     <div x-data="singlePostActions(
             {{ \Illuminate\Support\Js::from($post) }},

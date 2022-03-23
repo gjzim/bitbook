@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -65,7 +66,14 @@ class PostController extends Controller
 
         $post->load(['media', 'author', 'author.media'])->loadCount(['comments', 'likes']);
 
-        return view('posts.show', ['post' => new PostResource($post)]);
+        $pageTitle = $post->content
+            ? Str::limit($post->content, 25)
+            : "Post by {$post->author->name}";
+
+        return view('posts.show', [
+            'post' => new PostResource($post),
+            'pageTitle' => $pageTitle,
+        ]);
     }
 
 
