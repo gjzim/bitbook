@@ -22,7 +22,7 @@ class UserNotificationSubscriber
         $notification = new Notification([
             'type' => 'action',
             'text' => "{$event->sender->name} sent a friend request to you.",
-            'url' => route('users.show', ['user' => $event->sender]),
+            'url' => route('users.show', ['user' => $event->sender], false),
             'image_url' => $event->sender->getAvatarUrl('small')
         ]);
 
@@ -39,7 +39,7 @@ class UserNotificationSubscriber
         $notification = new Notification([
             'type' => 'action',
             'text' => "{$event->receiver->name} accepted your friend request.",
-            'url' => route('users.show', ['user' => $event->receiver]),
+            'url' => route('users.show', ['user' => $event->receiver], false),
             'image_url' => $event->receiver->getAvatarUrl('small')
         ]);
 
@@ -60,7 +60,7 @@ class UserNotificationSubscriber
         $notification = new Notification([
             'type' => 'action',
             'text' => "{$event->actor->name} liked your post.",
-            'url' => route('posts.show', ['post' => $event->post]),
+            'url' => route('posts.show', ['post' => $event->post], false),
             'image_url' => $event->actor->getAvatarUrl('small')
         ]);
 
@@ -81,7 +81,7 @@ class UserNotificationSubscriber
         $notification = new Notification([
             'type' => 'action',
             'text' => "{$event->actor->name} commented your post.",
-            'url' => route('posts.show', ['post' => $event->post]),
+            'url' => route('posts.show', ['post' => $event->post], false),
             'image_url' => $event->actor->getAvatarUrl('small')
         ]);
 
