@@ -74,6 +74,17 @@ class UserNotificationSubscriber
      */
     public function handleCommentedOnPost(CommentedOnPost $event)
     {
+        $this->notifyPostAuthorOnNewComment($event);
+        $this->notifyOtherCommentersOnNewComment($event);
+    }
+
+    /**
+     * Notify the post author on new comment.
+     *
+     * @return void
+     */
+    private function notifyPostAuthorOnNewComment($event)
+    {
         if ($event->actor->id === $event->post->author->id) {
             return;
         }
@@ -86,6 +97,28 @@ class UserNotificationSubscriber
         ]);
 
         $event->post->author->notifications()->save($notification);
+    }
+
+    /**
+     * Notify the other commenters of a post on new comment.
+     *
+     * @return void
+     */
+    private function notifyOtherCommentersOnNewComment($event)
+    {
+        $commenters = $event->post->commenters()
+            ->filter(fn ($user) => $user->id !== $event->post->author->id);
+
+        foreach ($commenters as $commenter) {
+            $notification = new Notification([
+                'type' => 'action',
+                'text' => "{$event->actor->name} commented {$event->post->author->name}'s post.",
+                'url' => route('posts.show', ['post' => $event->post], false),
+                'image_url' => $event->actor->getAvatarUrl('small')
+            ]);
+
+            $commenter->notifications()->save($notification);
+        }
     }
 
     /**

@@ -41,6 +41,16 @@ class Post extends Model implements HasMedia
         return $this->hasMany(Comment::class);
     }
 
+    public function commenters()
+    {
+        $commenterIds = Comment::select('user_id')
+            ->where('post_id', $this->id)
+            ->distinct();
+
+        return User::whereIn('id', $commenterIds)
+            ->get();
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('images')
