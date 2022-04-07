@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
 use App\Models\Post;
 use App\Http\Resources\PostResource;
 
@@ -25,6 +24,7 @@ class HomeController extends Controller
             ->withCount(['likes', 'comments'])
             ->whereIn('user_id', [auth()->user()->id, ...auth()->user()->getFriendsIds()])
             ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10)
             ->tap('add_liked_by_logged_in_user_attribute');
 
