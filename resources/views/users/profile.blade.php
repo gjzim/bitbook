@@ -70,7 +70,8 @@
 
         <div class="w-1/4">
             <div class="mt-5 p-1 border border-gray-300">
-                <img src="{{ $user->getAvatarUrl('thumb') }}" alt="Avatar image of {{ $user->name }}" width="255px">
+                <img x-data @click="$dispatch('open-avatar-modal')" src="{{ $user->getAvatarUrl('thumb') }}"
+                    class="mx-auto w-full cursor-pointer" alt="Avatar image of {{ $user->name }}" width="255px">
             </div>
 
             @can('add-as-friend', $user)
@@ -79,3 +80,7 @@
         </div>
     </div>
 @endsection
+
+@push('overlays')
+    @include('overlays.avatar-modal')
+@endpush
