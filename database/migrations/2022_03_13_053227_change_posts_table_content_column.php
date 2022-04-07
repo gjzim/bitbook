@@ -14,7 +14,7 @@ class ChangePostsTableContentColumn extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string('content')->nullable()->change();
+            $table->text('content')->nullable()->change();
         });
     }
 
