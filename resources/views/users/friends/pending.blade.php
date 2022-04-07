@@ -48,8 +48,11 @@
                             }
                         }" x-ref="parent" class="w-64 mb-5 mr-5 p-1 border text-center">
                         <a href="{{ $pendingFriend->url }}">
-                            <img src="{{ $pendingFriend->getAvatarUrl('thumb') }}"
+                            <div class="flex justify-center items-center bg-gray-100" style="min-height: 245px">
+                                <img src="{{ $pendingFriend->getAvatarUrl('thumb') }}"
                                 alt="{{ $pendingFriend->name }} avatar image">
+                            </div>
+
                             <div class="p-3 pb-0">
                                 <h2 class="font-bold text-blue-500">{{ $pendingFriend->name }}</h2>
                                 <h3 class="font-bold text-sm text-gray-600">{{ $pendingFriend->usernamePrefixed }}</h3>
